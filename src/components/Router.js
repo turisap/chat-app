@@ -4,6 +4,7 @@ import {Switch, Route, BrowserRouter} from 'react-router-dom';
 import Home from './pages/home';
 import NavBar from './base/NavBar';
 import { ChatReduxContainer } from '../containers/ChatContainer';
+import LoginForm from "./pages/auth/LoginForm";
 
 export default class Router extends React.Component {
      render() {
@@ -14,6 +15,7 @@ export default class Router extends React.Component {
                     <Switch>
                         <Route exact path="/" component={Home}/>
                         <Route path="/chat" component={ChatReduxContainer}/>
+                        <Route path="/chat" component={LoginForm}/>
                     </Switch>
                 </React.Fragment>
             </BrowserRouter>

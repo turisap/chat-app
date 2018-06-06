@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import Messages from './Messages';
 import MessageInput from './MessageInput';
 import UserList from './UserList';
+import LoginForm from '../auth/LoginForm';
 import ENV  from '../../../../ENV';
 import { USER_CONNECTED, LOGOUT } from '../../../../events';
 
@@ -29,18 +30,18 @@ class Chat extends React.Component {
     initSocket = () => {
         const socket = io(ENV.socketio.socketURL);
         socket.on('connect', () => {
-            console.log('CONNECTED', socket)
+            console.log('CONNECTED')
         });
         this.setState({socket});
     };
 
 
     /**
-     * Sets user propery to the state
+     * Sets user property to the state
      */
     setUser = user => {
         const { socket } = this.state;
-        socket.emit(USER_CONNECTED);
+        socket.emit(USER_CONNECTED, user);
         this.setState(user);
     };
 
@@ -70,6 +71,8 @@ class Chat extends React.Component {
     }*/
 
     render() {
+        const { title } = this.props;
+        const { socket } = this.state;
         return(
             <div className="chat__mainContainer">
                 <UserList/>
@@ -77,6 +80,7 @@ class Chat extends React.Component {
                     <Messages messages={this.props.messages}/>
                     <MessageInput {...this.props}/>
                 </div>
+                <LoginForm socket={socket} setUser={this.setUser}/>
             </div>
         )
     }
