@@ -1,0 +1,11 @@
+@import "../../base/mixins";
+
+.chat__mainContainer {
+  @include display-grid;
+  @include bordered(#000);
+  grid-template-columns: 1fr 4fr;
+  margin: 1rem;
+  width: auto;
+  height: 100vh;
+}
+

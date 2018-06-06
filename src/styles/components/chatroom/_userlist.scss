@@ -1,0 +1,6 @@
+@import "../../base/mixins";
+
+.userlist__main {
+  @include bordered(#000);
+  grid-column: 1;
+}

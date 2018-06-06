@@ -1,0 +1,6 @@
+@import "../../base/mixins";
+
+.messages__container {
+  @include bordered(#000);
+  height: 70vh;
+}

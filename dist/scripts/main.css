@@ -1,0 +1,1 @@
+html{font-size:62.5%}body,html{padding:0;margin:0;overflow:hidden}.chat__mainContainer{display:grid;justify-self:center;align-self:center;border:1px solid #000;grid-template-columns:1fr 4fr;margin:1rem;width:auto;height:100vh}.userlist__main{border:1px solid #000;grid-column:1}.chatBox__container{grid-column:2}.messages__container{border:1px solid #000;height:70vh}

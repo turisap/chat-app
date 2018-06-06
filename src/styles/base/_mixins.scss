@@ -1,0 +1,55 @@
+@import "./settings";
+
+// a base template for a link
+@mixin link($color : black, $darkenBy : 70%) {
+  color: $color!important;
+  &:hover {
+    text-decoration: none;
+    color : darken($color, $darkenBy)!important;
+  }
+  @content;
+}
+
+// a base template for a section
+@mixin section ($flex:false, $margin:$section_margin, $padding:$section_padding, $background:white, $justify:flex-start) {
+  display: if($flex, flex, block);
+  justify-content:$justify;
+  background: $background;
+  padding : $padding;
+  flex-wrap: wrap;
+  margin: $margin;
+  @content;
+}
+
+// bordered bottom
+@mixin border-bottom($color:$border_bottom){
+  border-bottom: 1px solid $color;
+  padding-bottom: 1rem;
+  @content;
+}
+
+// box shadow
+@mixin shadow ($hor-offset, $vert-offset, $blur-rad, $spread-rad, $color){
+  -webkit-box-shadow: $hor-offset $vert-offset $blur-rad $spread-rad $color;
+  -moz-box-shadow:    $hor-offset $vert-offset $blur-rad $spread-rad $color;
+  box-shadow:         $hor-offset $vert-offset $blur-rad $spread-rad $color;
+  @content;
+}
+
+// bordered utility class
+@mixin bordered ($color : red) {
+  border: 1px solid $color;
+}
+
+@mixin display-flex($justify-content:flex-start, $flex-direction:row, $flex-wrap:true){
+  display: flex;
+  justify-content: $justify-content;
+  flex-direction: $flex-direction;
+  flex-wrap: if($flex-wrap, wrap, none);
+}
+
+@mixin  display-grid(){
+  display: grid;
+  justify-self: center;
+  align-self: center;
+}
