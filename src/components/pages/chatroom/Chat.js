@@ -1,9 +1,7 @@
 import React from 'react';
 import io from 'socket.io-client';
 
-import Messages from './Messages';
-import MessageInput from './MessageInput';
-import UserList from './UserList';
+import ChatSocketContainer from './ChatSocketContainer';
 import LoginForm from '../auth/LoginForm';
 import ENV  from '../../../../ENV';
 import { USER_CONNECTED, LOGOUT } from '../../../../events';
@@ -42,14 +40,14 @@ class Chat extends React.Component {
     setUser = user => {
         const { socket } = this.state;
         socket.emit(USER_CONNECTED, user);
-        this.setState(user);
+        this.setState({user});
     };
 
     /**
      * Sets user property of the state to null
      */
     logout = () => {
-        const { socket } = this.state;
+        const { socket, user } = this.state;
         socket.emit(LOGOUT, user);
         this.setState({user:null})
     };
@@ -72,16 +70,18 @@ class Chat extends React.Component {
 
     render() {
         const { title } = this.props;
-        const { socket } = this.state;
+        const { socket, user } = this.state;
         return(
-            <div className="chat__mainContainer">
-                <UserList/>
-                <div className="chatBox__container">
-                    <Messages messages={this.props.messages}/>
-                    <MessageInput {...this.props}/>
-                </div>
-                <LoginForm socket={socket} setUser={this.setUser}/>
-            </div>
+            <React.Fragment>
+                {
+                    !user
+                        ?
+                        <LoginForm socket={socket} setUser={this.setUser}/>
+                        :
+                        <ChatSocketContainer socket={socket} user={user} logout={this.logout} messages={this.props.messages}/>
+
+                }
+            </React.Fragment>
         )
     }
 }

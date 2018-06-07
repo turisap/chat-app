@@ -15,7 +15,6 @@ export default class Router extends React.Component {
                     <Switch>
                         <Route exact path="/" component={Home}/>
                         <Route path="/chat" component={ChatReduxContainer}/>
-                        <Route path="/chat" component={LoginForm}/>
                     </Switch>
                 </React.Fragment>
             </BrowserRouter>

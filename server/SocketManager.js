@@ -11,7 +11,7 @@ module.exports = function (socket) {
     socket.on(VERIFY_USER, (nickname, callback) => {
         if(isUser(connectedUsers, nickname)) callback({isUser: true, user : null});
         else callback({isUser : false, user : createUser({name : nickname})})
-    })
+    });
 
     // User connects with a username
     socket.on(USER_CONNECTED, (user) => {
