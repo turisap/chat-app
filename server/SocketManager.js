@@ -1,8 +1,9 @@
 const io = require('./index.js').io;
-const {VERIFY_USER, USER_CONNECTED, LOGOUT} = require('../events');
+const {VERIFY_USER, USER_CONNECTED, LOGOUT, COMMUNITY_CHAT} = require('../events');
 const { createUser, createMessage, createChat } = require('../factories');
 
 let connectedUsers = {};
+let communityChat = createChat();
 
 module.exports = function (socket) {
     console.log("Socket ID:" + socket.id);
@@ -19,6 +20,11 @@ module.exports = function (socket) {
         socket.user = user; // for usage everywhere in the code, kind of socket global
         console.log(connectedUsers);
     })
+
+    socket.on(COMMUNITY_CHAT, (callback)=>{
+        callback(communityChat)
+    });
+
 }
 
 /**

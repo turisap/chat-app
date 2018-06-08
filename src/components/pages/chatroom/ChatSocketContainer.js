@@ -2,6 +2,8 @@ import React from 'react';
 import Messages from './Messages';
 import MessageInput from './MessageInput';
 import UserList from './UserList';
+import ChatHeading from './ChatHeading';
+const factories = require('../../../../factories');
 
 import {MESSAGE_SENT, TYPING, COMMUNITY_CHAT, MESSAGE_RECEIVED} from '../../../../events';
 
@@ -66,7 +68,7 @@ class ChatSocketContainer extends React.Component {
         const messageEvent = `${MESSAGE_RECEIVED}-${chat.id}`;
         const typingEvent = `${TYPING}-${chat.id}`;
 
-        socket.on(messageEvent);
+        socket.on(messageEvent, this.addMessageToChat(chat.id));
         socket.on(typingEvent)
     }
 
@@ -88,38 +90,43 @@ class ChatSocketContainer extends React.Component {
         const { socket, user, logout } = this.props;
         const { chats, activeChat } = this.state;
         return (
-            activeChat
-            ?
-                <div className="chat__mainContainer">
-                    <UserList
-                        socket={socket}
-                        logout={logout}
-                        chats={chats}
-                        activeChat={activeChat}
-                        setActiveChat={this.setActiveChat}
-                        user={user}
-                    />
-                    <div className="chatBox__container">
-                        <Messages messages={activeChat.messages}
-                                  socket={socket}
-                                  user={user}
-                                  logout={this.logout}
-                                  typingUsers={activeChat.typingUsers}
-                        />
-                        <MessageInput
-                            {...this.props}
-                            socket={socket}
-                            user={user}
-                            logout={this.logout}
-                            sendMessage={message => this.sendMessage(activeChat.id, message)}
-                            sendTyping={isTyping => this.sendTyping(activeChat.id, isTyping)}
-                        />
-                    </div>
-                </div>
-                :
-                <div className="chat-room choose">
-                    <h3>Choose a chat</h3>
-                </div>
+            <React.Fragment>
+                <UserList
+                    socket={socket}
+                    logout={logout}
+                    chats={chats}
+                    activeChat={activeChat}
+                    setActiveChat={this.setActiveChat}
+                    user={user}
+                />
+                {
+                    activeChat
+                        ?
+                        <div className="chat__mainContainer">
+                            <div className="chatBox__container">
+                                <ChatHeading name={activeChat.name}/>
+                                <Messages messages={activeChat.messages}
+                                          socket={socket}
+                                          user={user}
+                                          logout={this.logout}
+                                          typingUsers={activeChat.typingUsers}
+                                />
+                                <MessageInput
+                                    {...this.props}
+                                    socket={socket}
+                                    user={user}
+                                    logout={this.logout}
+                                    sendMessage={message => this.sendMessage(activeChat.id, message)}
+                                    sendTyping={isTyping => this.sendTyping(activeChat.id, isTyping)}
+                                />
+                            </div>
+                        </div>
+                        :
+                        <div className="chat-room choose">
+                            <h3>Choose a chat</h3>
+                        </div>
+                }
+            </React.Fragment>
         )
     }
 }
