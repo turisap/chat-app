@@ -1,0 +1,6 @@
+THE WHOLE ARTICLE https://blog.bitsrc.io/how-to-write-better-code-in-react-best-practices-b8ca87d462b0
+use Proptypes as static and DefaultProps
+use eslint plugin react https://www.npmjs.com/package/eslint-plugin-react
+PureComponent and WHyDidYouUpdate https://github.com/maicki/why-did-you-update
+ref
+react internals from this article http://www.mattgreer.org/articles/react-internals-part-one-basic-rendering/
