@@ -1,10 +1,11 @@
 import React from 'react';
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
 
-import Home from './pages/home';
 import NavBar from './base/NavBar';
+import RequireAuth from './auth/RequireAuth';
+
 import { ChatReduxContainer } from '../containers/ChatContainer';
-import LoginForm from "./pages/auth/LoginForm";
+import { SignInFormReduxContainer } from '../containers/SigInFormContainer';
 
 export default class Router extends React.Component {
      render() {
@@ -13,8 +14,8 @@ export default class Router extends React.Component {
                 <React.Fragment>
                     <NavBar/>
                     <Switch>
-                        <Route exact path="/" component={Home}/>
-                        <Route path="/chat" component={ChatReduxContainer}/>
+                        <Route path="/chat" component={RequireAuth(ChatReduxContainer)}/>
+                        <Route path="/signin" component={SignInFormReduxContainer}/>
                     </Switch>
                 </React.Fragment>
             </BrowserRouter>

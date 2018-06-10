@@ -9,50 +9,26 @@ let communityChat = createChat();
 module.exports = function (socket) {
     console.log("Socket ID:" + socket.id);
 
-    let sendMessageToChatFromUser;
-    let sendTypingFromUser;
-
-    // Verify Username
-    socket.on(VERIFY_USER, (nickname, callback) => {
-        if(isUser(connectedUsers, nickname)) callback({isUser: true, user : null});
-        else callback({isUser : false, user : createUser({name : nickname})})
+    /**
+     * Verification of username existence on the "back-end"
+     * SHOULD BE REVISED
+     */
+    socket.on(VERIFY_USER, (username, callback) => {
+        if(isUser(connectedUsers, username)) {
+            callback({userExists : true, user : null});
+        } else {
+            callback({userExists: false, user : createUser(username)})
+        }
     });
 
-    // User connects with a username
     socket.on(USER_CONNECTED, (user) => {
         connectedUsers = addUser(connectedUsers, user);
-        socket.user = user; // for usage everywhere in the code, kind of socket global
-        //!!!!!!!!!! this func return another function which we can use anywhere after connection in this socket manager 45:51 and a bit earlier in the video
-        sendMessageToChatFromUser = sendMessageToChat(user.name);
-        sendTypingFromUser = sendTypingToChat(user.name);
-    });
-
-    socket.on(COMMUNITY_CHAT, (callback)=>{
-        callback(communityChat)
-    });
-
-    socket.on('disconnect', () => {
-        if ("user" in socket) {
-            connectedUsers = removeUser(connectedUsers, socket.user.name);
-        }
-        io.emit(USER_DISCONNECTED, connectedUsers);
-        //console.log("From Disconnection" + connectedUsers);
-    });
-
-    socket.on(LOGOUT, () => {
-        connectedUsers = removeUser(connectedUsers, socket.user.name);
-        io.emit(USER_DISCONNECTED, connectedUsers);
-        //console.log("LOGOUT" + connectedUsers);
-    });
-
-    socket.on(MESSAGE_SENT, ({chatId, message}) => {
-        sendMessageToChatFromUser(chatId, message);
-    });
-    socket.on(TYPING, ({chatId, isTyping}) => {
-        // console.log(chatId, isTyping);
-        sendTypingFromUser(chatId, isTyping);
+        //setting kind of global for socket. I also stored it into the Redux Store.
+        socket.user = user;
+        console.log(connectedUsers);
     })
 };
+
 
 /**
  * Adds a user to the user list
@@ -60,7 +36,7 @@ module.exports = function (socket) {
 
 function addUser (userList, user) {
     let newList = Object.assign({}, userList);
-    newList[user.name] = user;
+    newList[user.username] = user;
     return newList;
 }
 

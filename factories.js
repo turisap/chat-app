@@ -1,13 +1,13 @@
-const uuid = require('uuid');
+const uuid = require('uuid/v4');
 const moment = require('moment');
 
 /**
  * Creates a user
  */
 
-const createUser = ({name = ""} = {}) => ({
+const createUser = (username) => ({
         id : uuid(),
-        name
+        username
 });
 
 /**
