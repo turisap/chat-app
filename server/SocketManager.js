@@ -26,6 +26,13 @@ module.exports = function (socket) {
         //setting kind of global for socket. I also stored it into the Redux Store.
         socket.user = user;
         console.log(connectedUsers);
+    });
+
+    // need to pass a callback to here and remove a user from a chat
+    socket.on('disconnect', () => {
+        connectedUsers = removeUser(connectedUsers, socket.user.name);
+        io.emit(USER_DISCONNECTED, connectedUsers);
+        console.log(connectedUsers)
     })
 };
 

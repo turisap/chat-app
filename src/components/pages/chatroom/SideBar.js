@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-class UserList extends React.Component {
+class SideBar extends React.Component {
     constructor(props) {
         super(props)
     }
@@ -9,11 +9,11 @@ class UserList extends React.Component {
     render() {
         return (
             <div id="side-bar">
-
+                <h1>SideBar</h1>
             </div>
         );
 
     }
 }
 
-export default UserList;
+export default SideBar;

@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 import Messages from './Messages';
 import MessageInput from './MessageInput';
-import UserList from './UserList';
+import SideBar from './SideBar';
 import ChatHeading from './ChatHeading';
 import config from '../../../config/chatConfig';
 
@@ -33,7 +33,7 @@ class ChatSocketContainer extends React.Component {
      */
     initSocket = () => {
         const socket = io(config.socketio.socketURL);
-        socket.on('connect', () => console.log('CONNECTED'))
+        socket.on('connect', () => console.log('CONNECTED'));
         return socket;
     };
 
@@ -46,19 +46,64 @@ class ChatSocketContainer extends React.Component {
     logoutFromChat = (chatId) => {
         const { socket } = this.props;
         socket.emit(LOGOUT, chatId);
-        this.props.logoutFromChat(chatId);
+        this.props.logOutUserFromChat(chatId);
     };
 
 
+    /**
+     * Sends a message to a particular chat
+     * @param chatId
+     * @param message
+     */
+    sendMessageToChat = (chatId, message) => {
+        const { socket } = this.props;
+        socket.emit(MESSAGE_SENT, {chatId, message});
+    };
+
+    /**
+     * Sends a typing event to a chat
+     * @param chatId
+     * @param isTyping
+     */
+    sendTypingToChat = (chatId, isTyping) => {
+        const { socket } = this.props;
+        socket.emit(TYPING, {chatId, isTyping})
+    };
+
+    addMessageToChat = (chatId) => {
+        return message => {
+            const { chat } = this.props;
+            this.props.addMessageToChat(chat.id, message);
+        }
+    }
+
+    /**
+     * A template for chat creation login
+     * @param creatorUserId
+     */
+    // createChat = (creatorUserId) => {
+    //     const newChat = {
+    //         id: 'random id'
+    //     };
+    //     const messageEvent = `${MESSAGE_RECEIVED}-${newChat.id}`;
+    //     const typingEvent = `${TYPING}-${newChat.id}`;
+    // };
+
+
     render () {
+        const { activeChat } = this.props;
         return (
             <React.Fragment>
-                <UserList/>
+                <SideBar/>
                 <div className="chat__mainContainer">
                     <div className="chatBox__container">
                         <ChatHeading />
                         <Messages/>
-                        <MessageInput/>
+                        <MessageInput
+                            logoutFromChat={this.logoutFromChat}
+                            sendMessageToChat={message => this.sendMessageToChat(activeChat.id, message)}
+                            sendTypingToChat={isTyping => this.sendTypingToChat(activeChat.id, isTyping)}
+                        />
                     </div>
                 </div>
             </React.Fragment>

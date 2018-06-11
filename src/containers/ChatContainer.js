@@ -12,7 +12,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addMessage : message => dispatch(addMessage(message)),
+    addMessage : (chatId, message) => dispatch(addMessage(chatId, message)),
     setSocket  : socket => dispatch(setSocket(socket)),
     setUser    : user => dispatch(setUser(user)),
     logOutUserFromChat : chatId => dispatch(logoutFromChat(chatId)),

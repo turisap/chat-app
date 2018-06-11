@@ -39,7 +39,9 @@ class LoginForm extends Component {
 
         const { socket } = this.props;
         socket.emit(USER_CONNECTED, user);
+
         this.props.setUser(user);
+        this.setError('');
     };
 
     /**
@@ -66,6 +68,7 @@ class LoginForm extends Component {
                     placeholder={"Pick up a username"}
                     error={this.state.error}
                     onChange={e => this.setState({username : e.target.value})}
+                    class={'username'}
                 />
             </form>
         )

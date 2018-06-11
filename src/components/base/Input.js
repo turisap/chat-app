@@ -6,9 +6,9 @@ class Input extends Component {
         super(props);
         this.label = props.label;
         this.type = props.type;
-        this.placeHolder = props.placeHolder;
+        this.placeHolder = props.placeholder;
         this.id = props.id;
-        this.className = props.className;
+        this.class = props.class;
         this.error = props.error;
         this.onChange = props.onChange;
         this.state = {
@@ -44,7 +44,7 @@ class Input extends Component {
                     placeholder={this.placeHolder}
                     onChange={this.handleChange}
                     id={this.id}
-                    className={this.className}
+                    className={this.class}
                 />
                <div className={'error'}>{this.state.error}</div>
             </React.Fragment>

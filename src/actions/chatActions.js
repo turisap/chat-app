@@ -1,12 +1,14 @@
 import * as types from './types';
 
 /**
- * Ads a message to array of messages in state
+ * Adds a message to array of messages in state
+ * @param chatId
  * @param message
- * @returns {{type: string, message: *}}
+ * @returns {{type: string, chatId: *, message: *}}
  */
-export const addMessage = (message) => ({
+export const addMessage = (chatId, message) => ({
     type : types.ADD_CHAT_MESSAGE,
+    chatId,
     message
 });
 

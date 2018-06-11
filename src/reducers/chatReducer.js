@@ -5,7 +5,6 @@ import * as chatActions from '../actions/types';
 const chatReducerDefaultState = {
     messages : messages(5),
     socket : null,
-    chats : [{id:1}],
     activeChat : null,
 };
 
@@ -14,7 +13,11 @@ export default (state=chatReducerDefaultState, action) => {
         case chatActions.ADD_CHAT_MESSAGE:
             return {
                 ...state,
-                messages : state.messages.concat(action.message)
+                activeChat : {
+                    ...state.activeChat,
+                    messages : addMessageToChat(action.message, state, action.chatId)
+                }
+
             };
         case chatActions.SET_SOCKET:
             return {
@@ -30,4 +33,11 @@ export default (state=chatReducerDefaultState, action) => {
             return state;
     }
 
+}
+
+
+function addMessageToChat (message, state, chatId) {
+    if (state.activeChat.id === chatId) {
+        return state.activeChat.messages.concat(message)
+    }
 }
