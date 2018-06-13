@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {addMessage, setSocket, setUser, logoutFromChat} from '../actions/chatActions';
+import {addMessage, setSocket, setUser, logoutFromChat, setActiveChat} from '../actions/chatActions';
 
 import ChatSocketContainer from '../components/pages/chatroom/ChatSocketContainer';
 
@@ -8,14 +8,16 @@ import ChatSocketContainer from '../components/pages/chatroom/ChatSocketContaine
 const mapStateToProps = (state, ownProps) => ({
     messages : state.chatData.messages,
     socket   : state.chatData.socket,
-    user     : state.chatData.user,
+    user     : state.userData.user,
+    activeChat : state.chatData.activeChat
 });
 
 const mapDispatchToProps = dispatch => ({
-    addMessage : (chatId, message) => dispatch(addMessage(chatId, message)),
+    addMessageToChat : (chatId, message) => dispatch(addMessage(chatId, message)),
     setSocket  : socket => dispatch(setSocket(socket)),
     setUser    : user => dispatch(setUser(user)),
     logOutUserFromChat : chatId => dispatch(logoutFromChat(chatId)),
+    setActiveChat : chat => dispatch(setActiveChat(chat)),
 });
 
 

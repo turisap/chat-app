@@ -32,3 +32,13 @@ export const logoutFromChat = (chatId) => ({
 });
 
 
+/**
+ * Sets active chat property to a provided chat
+ * @param chat
+ * @returns {{type: string, chat: *}}
+ */
+export const setActiveChat = (chat) => ({
+    type : types.SET_ACTIVE_CHAT,
+    chat
+});
+

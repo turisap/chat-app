@@ -20,7 +20,7 @@ class LoginForm extends Component {
      */
     componentWillUpdate(nextProps) {
         if(nextProps.authenticated) {
-            this.props.history.push('/home');
+            this.props.history.push('/chat');
         }
     }
 
@@ -40,8 +40,8 @@ class LoginForm extends Component {
         const { socket } = this.props;
         socket.emit(USER_CONNECTED, user);
 
-        this.props.setUser(user);
         this.setError('');
+        this.props.setUser(user);
     };
 
     /**

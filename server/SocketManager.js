@@ -4,11 +4,12 @@ const {VERIFY_USER, USER_CONNECTED, LOGOUT, COMMUNITY_CHAT,
 const { createUser, createMessage, createChat } = require('../factories');
 
 let connectedUsers = {};
-let communityChat = createChat();
+
 
 module.exports = function (socket) {
     console.log("Socket ID:" + socket.id);
 
+    let sendMessageToChatFromUser;
     /**
      * Verification of username existence on the "back-end"
      * SHOULD BE REVISED
@@ -25,14 +26,22 @@ module.exports = function (socket) {
         connectedUsers = addUser(connectedUsers, user);
         //setting kind of global for socket. I also stored it into the Redux Store.
         socket.user = user;
-        console.log(connectedUsers);
+        sendMessageToChatFromUser = sendMessageToChat(user.username);
+        console.log("Func", sendMessageToChatFromUser)
     });
 
     // need to pass a callback to here and remove a user from a chat
     socket.on('disconnect', () => {
-        connectedUsers = removeUser(connectedUsers, socket.user.name);
-        io.emit(USER_DISCONNECTED, connectedUsers);
-        console.log(connectedUsers)
+        if ("user" in socket) {
+            connectedUsers = removeUser(connectedUsers, socket.user.username);
+            io.emit(USER_DISCONNECTED, connectedUsers);
+            console.log(socket.user);
+        }
+    });
+
+    // sends a message to a chat from a particular user
+    socket.on(MESSAGE_SENT, ({chatId, message}) => {
+        sendMessageToChatFromUser(chatId, message);
     })
 };
 
@@ -72,7 +81,7 @@ function isUser(userList, userName) {
  */
 function sendMessageToChat(sender) {
     return (chatId, message) => {
-        io.emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage(message, sender));
+        io.emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage({message, sender}));
     }
 }
 

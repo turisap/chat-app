@@ -12,6 +12,7 @@ const factories = require('../../../../factories');
 import {MESSAGE_SENT, TYPING, COMMUNITY_CHAT, MESSAGE_RECEIVED, USER_CONNECTED, LOGOUT} from '../../../../events';
 
 class ChatSocketContainer extends React.Component {
+
     constructor(props) {
         super(props);
     }
@@ -20,9 +21,16 @@ class ChatSocketContainer extends React.Component {
      * Get socket object and set in to Redux store on component mount
      */
     componentDidMount = () => {
+        let socket;
+
         if (!this.props.socket) {
-            const socket = this.initSocket();
+            socket = this.initSocket();
             this.props.setSocket(socket);
+        }
+        if (!this.props.activeChat) {
+            const newChat = factories.createChat({name});
+            this.props.setActiveChat(newChat);
+            this.createChat(newChat, socket);
         }
     };
 
@@ -70,42 +78,51 @@ class ChatSocketContainer extends React.Component {
         socket.emit(TYPING, {chatId, isTyping})
     };
 
+
     addMessageToChat = (chatId) => {
         return message => {
-            const { chat } = this.props;
-            this.props.addMessageToChat(chat.id, message);
+            this.props.addMessageToChat(chatId, message);
         }
-    }
+    };
 
     /**
-     * A template for chat creation login
-     * @param creatorUserId
+     * Creates a new chat and assigns events to it
+     * @param newChat
+     * @param socket
      */
-    // createChat = (creatorUserId) => {
-    //     const newChat = {
-    //         id: 'random id'
-    //     };
-    //     const messageEvent = `${MESSAGE_RECEIVED}-${newChat.id}`;
-    //     const typingEvent = `${TYPING}-${newChat.id}`;
-    // };
+    createChat = (newChat, socket) => {
+        console.log(`Socket : ${socket}`);
+        const messageEvent = `${MESSAGE_RECEIVED}-${newChat.id}`;
+        const typingEvent = `${TYPING}-${newChat.id}`;
+
+        socket.on(messageEvent, this.addMessageToChat(newChat.id))
+    };
 
 
     render () {
         const { activeChat } = this.props;
         return (
             <React.Fragment>
-                <SideBar/>
-                <div className="chat__mainContainer">
-                    <div className="chatBox__container">
-                        <ChatHeading />
-                        <Messages/>
-                        <MessageInput
-                            logoutFromChat={this.logoutFromChat}
-                            sendMessageToChat={message => this.sendMessageToChat(activeChat.id, message)}
-                            sendTypingToChat={isTyping => this.sendTypingToChat(activeChat.id, isTyping)}
-                        />
-                    </div>
-                </div>
+                {
+                    activeChat &&
+                        <div>
+                            <SideBar/>
+                            <div className="chat__mainContainer">
+                                <div className="chatBox__container">
+                                    <ChatHeading />
+                                    <Messages
+                                        messages={activeChat.messages}
+                                    />
+                                    <MessageInput
+                                        logoutFromChat={this.logoutFromChat}
+                                        sendMessageToChat={message => this.sendMessageToChat(activeChat.id, message)}
+                                        sendTypingToChat={isTyping => this.sendTypingToChat(activeChat.id, isTyping)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                }
             </React.Fragment>
         )
     }

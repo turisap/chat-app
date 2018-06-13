@@ -6,22 +6,32 @@ import Message from './Message';
 
 
 const Messages = props => {
-    const { typingUsers, messages, user } = props;
+    const { typingUsers, messages, user, } = props;
     return (
         <React.Fragment>
-            {/*<div className="messages__container">*/}
-                {/*{messages.map(message => <Message fromMe={false} username={user.name} date={'today'} message={message}/>)}*/}
-            {/*</div>*/}
-            {/*<div>*/}
-                {/*{typingUsers.map(user => {*/}
+            <div className="messages__container">
+                {messages && messages.map((m,i)=> {
+                    const { time, sender, message} = m;
+                    return (
+                        <Message
+                            fromMe={false}
+                            sender={sender}
+                            time={time}
+                            message={message}
+                            key={i}
+                        />
+                    )
+                })}
+            </div>
+            <div>
+                {/*{typingUsers && typingUsers.map(name => {*/}
                     {/*return (*/}
                         {/*<div key={name}>*/}
                             {/*{`${name} is typing...`}*/}
                         {/*</div>*/}
                     {/*)*/}
                 {/*})}*/}
-            {/*</div>*/}
-            n
+            </div>
         </React.Fragment>
     )
 };

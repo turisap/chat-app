@@ -84,18 +84,36 @@
 
 import React, { Component } from 'react';
 
+import Input from '../../base/Input';
+import Button from '../../base/Button';
+
 class MessageInput extends Component {
 
     constructor(props) {
         super(props);
-
+        this.state = {
+            message : '',
+            isTyping : false
+        }
     }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.sendMessage();
+    };
+
+    sendMessage = () => {
+        this.props.sendMessageToChat(this.state.message)
+    };
 
 
     render() {
         return (
             <div className={"input__box"}>
-                <h3>Input Box</h3>
+                <form onSubmit={this.handleSubmit}>
+                    <Input type={'text'} onChange={e => this.setState({message:e.target.value})}/>
+                    <Button title={'SEND'} onClick={this.handleSubmit}/>
+                </form>
             </div>
         );
     }

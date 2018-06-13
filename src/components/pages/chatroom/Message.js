@@ -9,21 +9,21 @@ import propTypes from 'prop-types';
  * @returns {*}
  * @constructor
  */
-const Message = ({fromMe, username, date, message}) => (
+const Message = ({fromMe, sender, time, message}) => (
     <div className={classNames('message', {'from_me' : fromMe})}>
-        <div className="message__username">{username}</div>
-        <div className="message__date">{date}</div>
+        <div className="message__username">{sender}</div>
+        <div className="message__date">{time}</div>
         <div className="message__text">{message}</div>
     </div>
 );
 
 
-Message.propTypes = {
+/*Message.propTypes = {
     fromMe : propTypes.bool.isRequired,
     username : propTypes.string.isRequired,
     date    : propTypes.string.isRequired,
     message    : propTypes.string.isRequired
 
-};
+};*/
 
 export default Message;

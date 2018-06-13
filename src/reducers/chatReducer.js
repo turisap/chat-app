@@ -1,9 +1,9 @@
 import { messages } from '../fakedata/chat';
 import * as chatActions from '../actions/types';
+import * as factory from '../../factories';
 
 
 const chatReducerDefaultState = {
-    messages : messages(5),
     socket : null,
     activeChat : null,
 };
@@ -28,6 +28,11 @@ export default (state=chatReducerDefaultState, action) => {
             return {
                 ...state,
                 chats : state.chats.filter(chat => action.chatId !== chat.id)
+            };
+        case chatActions.SET_ACTIVE_CHAT:
+            return {
+                ...state,
+                activeChat : action.chat
             };
         default:
             return state;

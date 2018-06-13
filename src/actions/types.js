@@ -6,3 +6,4 @@ export const LOGOUT_FROM_CHAT = 'LOGOUT_FROM_CHAT';
 
 // USER RELATED ACTIONS
 export const SET_USER   = 'SET_USER';
+export const SET_ACTIVE_CHAT = 'SET_ACTIVE_CHAT';
