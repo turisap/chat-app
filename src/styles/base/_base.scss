@@ -9,4 +9,22 @@ body, html {
 }
 
 
+.messages__container {
+  overflow : auto;
+  height: 100vh;
+}
 
+.message {
+  display:grid;
+  grid-template-columns: 1f 1fr 1fr;
+}
+
+.message--from_me {
+  width : 30%;
+  justify-content: center;
+  grid-column : 3;
+}
+
+.message {
+  grid-column: 1;
+}

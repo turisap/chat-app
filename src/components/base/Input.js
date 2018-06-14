@@ -14,9 +14,14 @@ class Input extends Component {
         this.state = {
             value : null,
             error : ""
+
         }
 
     }
+
+    static propTypes = {
+        type : PropTypes.string.isRequired,
+    };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if(prevProps.error && !this.state.error) {
@@ -24,13 +29,10 @@ class Input extends Component {
         }
     }
 
-    static propTypes = {
-        type : PropTypes.string.isRequired,
-    };
 
     handleChange = (e) => {
         e.preventDefault();
-        this.setState({value : e.target.value})
+        this.setState({value : e.target.value});
         if (this.onChange) this.onChange(e);
     };
 

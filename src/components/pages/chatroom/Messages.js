@@ -5,36 +5,65 @@ import Message from './Message';
 
 
 
-const Messages = props => {
-    const { typingUsers, messages, user, } = props;
-    return (
-        <React.Fragment>
-            <div className="messages__container">
-                {messages && messages.map((m,i)=> {
-                    const { time, sender, message} = m;
-                    return (
-                        <Message
-                            fromMe={false}
-                            sender={sender}
-                            time={time}
-                            message={message}
-                            key={i}
-                        />
-                    )
-                })}
-            </div>
-            <div>
-                {/*{typingUsers && typingUsers.map(name => {*/}
+class Messages  extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.messageContainer = React.createRef();
+    }
+
+    /**
+     * Scrolls to the bottom of container on mount and adding a message
+     *
+     */
+    scrollOnMount = () => {
+        const container = this.messageContainer.current;
+        container.scrollTop = container.scrollHeight;
+    };
+
+
+    componentDidMount = () => {
+        this.scrollOnMount();
+    };
+
+
+    componentDidUpdate = (prevProps, prevState) => {
+        this.scrollOnMount();
+    };
+
+
+    render(){
+        const { typingUsers, messages, user} = this.props;
+        return (
+            <React.Fragment>
+                <div className="messages__container" ref={this.messageContainer}>
+                    {messages && messages.map((m,i)=> {
+                        const { time, sender, message} = m;
+                        const fromMe = sender === user.username;
+                        return (
+                            <Message
+                                fromMe={fromMe}
+                                sender={sender}
+                                time={time}
+                                message={message}
+                                key={i}
+                            />
+                        )
+                    })}
+                </div>
+                <div>
+                    {/*{typingUsers && typingUsers.map(name => {*/}
                     {/*return (*/}
-                        {/*<div key={name}>*/}
-                            {/*{`${name} is typing...`}*/}
-                        {/*</div>*/}
+                    {/*<div key={name}>*/}
+                    {/*{`${name} is typing...`}*/}
+                    {/*</div>*/}
                     {/*)*/}
-                {/*})}*/}
-            </div>
-        </React.Fragment>
-    )
-};
+                    {/*})}*/}
+                </div>
+            </React.Fragment>
+        )
+    }
+}
 
 Messages.propTypes = {
     messages : propTypes.arrayOf(

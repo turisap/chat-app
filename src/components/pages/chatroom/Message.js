@@ -10,10 +10,12 @@ import propTypes from 'prop-types';
  * @constructor
  */
 const Message = ({fromMe, sender, time, message}) => (
-    <div className={classNames('message', {'from_me' : fromMe})}>
-        <div className="message__username">{sender}</div>
-        <div className="message__date">{time}</div>
-        <div className="message__text">{message}</div>
+    <div className={'message'}>
+        <div className={classNames({'message--from_me' : fromMe})}>
+            <div className="message__username">{sender}</div>
+            <div className="message__date">{time}</div>
+            <div className="message__text">{message}</div>
+        </div>
     </div>
 );
 

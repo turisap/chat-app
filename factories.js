@@ -24,7 +24,7 @@ const createMessage = ({message = "", sender = ""} = {}) => ({
  * Creates a chat
  */
 const createChat = ({messages = [], name = 'test', users = []} = {}) => ({
-    id : uuid(),
+    id :  1,
     name,
     messages,
     users,

@@ -84,7 +84,6 @@
 
 import React, { Component } from 'react';
 
-import Input from '../../base/Input';
 import Button from '../../base/Button';
 
 class MessageInput extends Component {
@@ -100,10 +99,14 @@ class MessageInput extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.sendMessage();
+        this.setState({message: ''});
     };
 
+    /**
+     * Send a message to a particular chat
+     */
     sendMessage = () => {
-        this.props.sendMessageToChat(this.state.message)
+        this.props.sendMessageToChat(this.state.message);
     };
 
 
@@ -111,7 +114,11 @@ class MessageInput extends Component {
         return (
             <div className={"input__box"}>
                 <form onSubmit={this.handleSubmit}>
-                    <Input type={'text'} onChange={e => this.setState({message:e.target.value})}/>
+                    <input
+                        type={'text'}
+                        onChange={e => this.setState({message:e.target.value})}
+                        value={this.state.message}
+                    />
                     <Button title={'SEND'} onClick={this.handleSubmit}/>
                 </form>
             </div>

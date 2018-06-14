@@ -112,6 +112,7 @@ class ChatSocketContainer extends React.Component {
                                     <ChatHeading />
                                     <Messages
                                         messages={activeChat.messages}
+                                        user={this.props.user}
                                     />
                                     <MessageInput
                                         logoutFromChat={this.logoutFromChat}
