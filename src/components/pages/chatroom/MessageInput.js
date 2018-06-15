@@ -96,6 +96,13 @@ class MessageInput extends Component {
         }
     }
 
+    /**
+     * Stops typing event if component is going to unmount
+     */
+    componentWillUnmount() {
+        this.stopCheckingTyping();
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.sendMessage();
@@ -109,6 +116,42 @@ class MessageInput extends Component {
         this.props.sendMessageToChat(this.state.message);
     };
 
+    /**
+     * Sets interval for checking whether or not a user is typing
+     */
+    startCheckingTyping = () => {
+        console.log('Start typing')
+        this.typingInterval = setInterval(() => {
+            if((Date.now() - this.lastUpdateTime) > 300){
+                this.setState({isTyping : false});
+                this.stopCheckingTyping();
+            }
+        }, 300)
+    };
+
+    /**
+     * Clears interval for checking typing
+     */
+    stopCheckingTyping = () => {
+        console.log('stop typing')
+        if(this.typingInterval) {
+            clearInterval(this.typingInterval);
+            this.props.sendTypingToChat(false);
+        }
+    };
+
+    /**
+     * Sets state's isTyping property to true and sends typing event to the back-end
+     */
+    sendTyping  = () => {
+        this.lastUpdateTime = Date.now();
+        if(!this.state.isTyping) {
+            this.setState({isTyping : true});
+            this.props.sendTypingToChat(true);
+            this.startCheckingTyping();
+        }
+    };
+
 
     render() {
         return (
@@ -117,6 +160,7 @@ class MessageInput extends Component {
                     <input
                         type={'text'}
                         onChange={e => this.setState({message:e.target.value})}
+                        onKeyUp={e => e.keyCode !== 13 && this.sendTyping()}
                         value={this.state.message}
                     />
                     <Button title={'SEND'} onClick={this.handleSubmit}/>

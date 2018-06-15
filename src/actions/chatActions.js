@@ -42,3 +42,15 @@ export const setActiveChat = (chat) => ({
     chat
 });
 
+
+/**
+ * Adds a given user to chat's users array
+ * @param user
+ * @param chatId
+ * @returns {{type: string, user: *, chatId: *}}
+ */
+export const addUserToChat = (user) => ({
+    type : types.ADD_USER_TO_CHAT,
+    user
+});
+

@@ -1,6 +1,4 @@
-import { messages } from '../fakedata/chat';
 import * as chatActions from '../actions/types';
-import * as factory from '../../factories';
 
 
 const chatReducerDefaultState = {
@@ -34,11 +32,21 @@ export default (state=chatReducerDefaultState, action) => {
                 ...state,
                 activeChat : action.chat
             };
+        case chatActions.ADD_USER_TO_CHAT:
+            console.log("reducer", action.user)
+            return {
+                ...state,
+                activeChat : {
+                    ...state.activeChat,
+                    users: state.activeChat.users.concat(action.user)
+                }
+            };
         default:
             return state;
     }
 
 }
+
 
 
 function addMessageToChat (message, state, chatId) {

@@ -30,7 +30,7 @@ class LoginForm extends Component {
      * @param userExists
      */
     setUser = ({userExists, user}) => {
-        console.log(user, userExists);
+        // console.log(user, userExists);
 
         if(userExists) {
             this.setError('Username is already taken');

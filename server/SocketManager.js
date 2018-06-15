@@ -10,6 +10,7 @@ module.exports = function (socket) {
     console.log("Socket ID:" + socket.id);
 
     let sendMessageToChatFromUser;
+    let sendTypingToChatFromUser;
     /**
      * Verification of username existence on the "back-end"
      * SHOULD BE REVISED
@@ -27,6 +28,7 @@ module.exports = function (socket) {
         //setting kind of global for socket. I also stored it into the Redux Store.
         socket.user = user;
         sendMessageToChatFromUser = sendMessageToChat(user.username);
+        sendTypingToChatFromUser  = sendTypingToChat(user.username);
         console.log("Func", sendMessageToChatFromUser)
     });
 
@@ -43,6 +45,12 @@ module.exports = function (socket) {
     socket.on(MESSAGE_SENT, ({chatId, message}) => {
         sendMessageToChatFromUser(chatId, message);
     })
+
+    socket.on(TYPING, (chatId, isTyping) => {
+        sendTypingToChatFromUser(chatId, isTyping)
+    })
+
+
 };
 
 

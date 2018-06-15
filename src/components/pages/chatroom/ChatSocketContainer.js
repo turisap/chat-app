@@ -9,7 +9,7 @@ import config from '../../../config/chatConfig';
 
 const factories = require('../../../../factories');
 
-import {MESSAGE_SENT, TYPING, COMMUNITY_CHAT, MESSAGE_RECEIVED, USER_CONNECTED, LOGOUT} from '../../../../events';
+import {MESSAGE_SENT, TYPING, MESSAGE_RECEIVED, LOGOUT} from '../../../../events';
 
 class ChatSocketContainer extends React.Component {
 
@@ -18,21 +18,28 @@ class ChatSocketContainer extends React.Component {
     }
 
     /**
-     * Get socket object and set in to Redux store on component mount
+     * Get socket, user and activeChat objects and set in to Redux store on component mount
      */
-    componentDidMount = () => {
+    componentDidMount() {
         let socket;
+
+        const {activeChat, user} = this.props;
 
         if (!this.props.socket) {
             socket = this.initSocket();
             this.props.setSocket(socket);
         }
-        if (!this.props.activeChat) {
+        if (!activeChat) {
             const newChat = factories.createChat({name});
             this.props.setActiveChat(newChat);
             this.createChat(newChat, socket);
         }
+
+        if (user && activeChat) {
+            this.props.addUserToChat(user);
+        }
     };
+
 
 
     /**
@@ -79,9 +86,39 @@ class ChatSocketContainer extends React.Component {
     };
 
 
+    /**
+     * Adds a message to a particular chat
+     * @param chatId
+     * @returns {Function}
+     */
     addMessageToChat = (chatId) => {
         return message => {
             this.props.addMessageToChat(chatId, message);
+        }
+    };
+
+    /**
+	*	Updates the typing of chat with id passed in.
+	*	@param chatId {number}
+	*/
+    updateTypingInChat = (chatId) =>{
+        return ({isTyping, user})=>{
+            if(user !== this.props.user.username){
+
+                const { chats } = this.props;
+
+                let newChats = chats.map((chat)=>{
+                    if(chat.id === chatId){
+                        if(isTyping && !chat.typingUsers.includes(user)){
+                            chat.typingUsers.push(user)
+                        }else if(!isTyping && chat.typingUsers.includes(user)){
+                            chat.typingUsers = chat.typingUsers.filter(u => u !== user)
+                        }
+                    }
+                    return chat
+                });
+                this.setState({chats:newChats})
+            }
         }
     };
 
@@ -95,7 +132,8 @@ class ChatSocketContainer extends React.Component {
         const messageEvent = `${MESSAGE_RECEIVED}-${newChat.id}`;
         const typingEvent = `${TYPING}-${newChat.id}`;
 
-        socket.on(messageEvent, this.addMessageToChat(newChat.id))
+        socket.on(messageEvent, this.addMessageToChat(newChat.id));
+        socket.on(typingEvent, this.updateTypingInChat(newChat.id));
     };
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {addMessage, setSocket, setUser, logoutFromChat, setActiveChat} from '../actions/chatActions';
+import {addMessage, setSocket, setUser, logoutFromChat, setActiveChat, addUserToChat} from '../actions/chatActions';
 
 import ChatSocketContainer from '../components/pages/chatroom/ChatSocketContainer';
 
@@ -18,6 +18,7 @@ const mapDispatchToProps = dispatch => ({
     setUser    : user => dispatch(setUser(user)),
     logOutUserFromChat : chatId => dispatch(logoutFromChat(chatId)),
     setActiveChat : chat => dispatch(setActiveChat(chat)),
+    addUserToChat : user => dispatch(addUserToChat(user))
 });
 
 
