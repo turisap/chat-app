@@ -46,11 +46,25 @@ export const setActiveChat = (chat) => ({
 /**
  * Adds a given user to chat's users array
  * @param user
- * @param chatId
  * @returns {{type: string, user: *, chatId: *}}
  */
 export const addUserToChat = (user) => ({
     type : types.ADD_USER_TO_CHAT,
     user
+});
+
+
+/**
+ * Adds or removes a given user from  chat's typingUsers array based on isTyping booleans
+ * @param chatId
+ * @param user
+ * @param isTyping
+ * @returns {{type: string, chatId: *, user: *, isTyping: *}}
+ */
+export const updateTypingInChat = (chatId, user, isTyping) => ({
+    type : types.UPDATE_TYPING_IN_CHAT,
+    chatId,
+    user,
+    isTyping
 });
 

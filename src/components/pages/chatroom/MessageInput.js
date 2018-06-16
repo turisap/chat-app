@@ -126,7 +126,7 @@ class MessageInput extends Component {
                 this.setState({isTyping : false});
                 this.stopCheckingTyping();
             }
-        }, 300)
+        }, 3300)
     };
 
     /**

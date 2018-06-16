@@ -1,7 +1,6 @@
 const io = require('./index.js').io;
-const {VERIFY_USER, USER_CONNECTED, LOGOUT, COMMUNITY_CHAT,
-    USER_DISCONNECTED, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING} = require('../events');
-const { createUser, createMessage, createChat } = require('../factories');
+const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING} = require('../events');
+const { createUser, createMessage} = require('../factories');
 
 let connectedUsers = {};
 
@@ -28,8 +27,7 @@ module.exports = function (socket) {
         //setting kind of global for socket. I also stored it into the Redux Store.
         socket.user = user;
         sendMessageToChatFromUser = sendMessageToChat(user.username);
-        sendTypingToChatFromUser  = sendTypingToChat(user.username);
-        console.log("Func", sendMessageToChatFromUser)
+        sendTypingToChatFromUser  = sendTypingToChat(user);
     });
 
     // need to pass a callback to here and remove a user from a chat
@@ -37,20 +35,17 @@ module.exports = function (socket) {
         if ("user" in socket) {
             connectedUsers = removeUser(connectedUsers, socket.user.username);
             io.emit(USER_DISCONNECTED, connectedUsers);
-            console.log(socket.user);
         }
     });
 
     // sends a message to a chat from a particular user
     socket.on(MESSAGE_SENT, ({chatId, message}) => {
         sendMessageToChatFromUser(chatId, message);
-    })
+    });
 
-    socket.on(TYPING, (chatId, isTyping) => {
+    socket.on(TYPING, ({chatId, isTyping}) => {
         sendTypingToChatFromUser(chatId, isTyping)
-    })
-
-
+    });
 };
 
 

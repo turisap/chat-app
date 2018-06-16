@@ -50,15 +50,18 @@ class Messages  extends React.Component {
                             />
                         )
                     })}
-                </div>
-                <div>
-                    {/*{typingUsers && typingUsers.map(name => {*/}
-                    {/*return (*/}
-                    {/*<div key={name}>*/}
-                    {/*{`${name} is typing...`}*/}
-                    {/*</div>*/}
-                    {/*)*/}
-                    {/*})}*/}
+                    <div>
+                        {
+                            typingUsers && typingUsers.map(u => {
+                                if (u.id !== user.id) {
+                                    return (
+                                        <div key={u.id}>
+                                            {`${u.username} is typing...`}
+                                        </div>
+                                    )
+                                }
+                            })}
+                    </div>
                 </div>
             </React.Fragment>
         )

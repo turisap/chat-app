@@ -7,6 +7,7 @@ const chatReducerDefaultState = {
 };
 
 export default (state=chatReducerDefaultState, action) => {
+
     switch(action.type) {
         case chatActions.ADD_CHAT_MESSAGE:
             return {
@@ -33,12 +34,19 @@ export default (state=chatReducerDefaultState, action) => {
                 activeChat : action.chat
             };
         case chatActions.ADD_USER_TO_CHAT:
-            console.log("reducer", action.user)
             return {
                 ...state,
                 activeChat : {
                     ...state.activeChat,
-                    users: state.activeChat.users.concat(action.user)
+                    users : state.activeChat.users.concat(action.user)
+                }
+            };
+        case chatActions.UPDATE_TYPING_IN_CHAT:
+            return {
+                ...state,
+                activeChat : {
+                    ...state.activeChat,
+                    typingUsers: updateTypingUsers(state.activeChat.typingUsers, action.user, action.isTyping)
                 }
             };
         default:
@@ -48,9 +56,35 @@ export default (state=chatReducerDefaultState, action) => {
 }
 
 
-
+/**
+ * Adds a message to messges array of a given chat
+ * @param message
+ * @param state
+ * @param chatId
+ * @returns {Array|*|T[]|string}
+ */
 function addMessageToChat (message, state, chatId) {
     if (state.activeChat.id === chatId) {
         return state.activeChat.messages.concat(message)
     }
+}
+
+/**
+ * Updates typingUsers array of a given chat based on its length and isTyping property
+ * @param typingUsers
+ * @param user
+ * @param isTyping
+ * @returns {*}
+ */
+function updateTypingUsers (typingUsers, user, isTyping) {
+    if(!typingUsers.length) {
+        typingUsers.push(user);
+        return typingUsers;
+    }
+    return typingUsers.filter(u => {
+        if(u.id === user.id) {
+            return isTyping;
+        }
+        return true;
+    });
 }

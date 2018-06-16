@@ -48,7 +48,7 @@ class ChatSocketContainer extends React.Component {
      */
     initSocket = () => {
         const socket = io(config.socketio.socketURL);
-        socket.on('connect', () => console.log('CONNECTED'));
+        socket.on('connect', () => console.log(socket));
         return socket;
     };
 
@@ -101,24 +101,9 @@ class ChatSocketContainer extends React.Component {
 	*	Updates the typing of chat with id passed in.
 	*	@param chatId {number}
 	*/
-    updateTypingInChat = (chatId) =>{
+    updateTypingInChat = (chatId) => {
         return ({isTyping, user})=>{
-            if(user !== this.props.user.username){
-
-                const { chats } = this.props;
-
-                let newChats = chats.map((chat)=>{
-                    if(chat.id === chatId){
-                        if(isTyping && !chat.typingUsers.includes(user)){
-                            chat.typingUsers.push(user)
-                        }else if(!isTyping && chat.typingUsers.includes(user)){
-                            chat.typingUsers = chat.typingUsers.filter(u => u !== user)
-                        }
-                    }
-                    return chat
-                });
-                this.setState({chats:newChats})
-            }
+            this.props.updateTypingInChat(chatId, user, isTyping);
         }
     };
 
@@ -128,7 +113,6 @@ class ChatSocketContainer extends React.Component {
      * @param socket
      */
     createChat = (newChat, socket) => {
-        console.log(`Socket : ${socket}`);
         const messageEvent = `${MESSAGE_RECEIVED}-${newChat.id}`;
         const typingEvent = `${TYPING}-${newChat.id}`;
 
@@ -139,6 +123,7 @@ class ChatSocketContainer extends React.Component {
 
     render () {
         const { activeChat } = this.props;
+        const typingUsers = activeChat ? activeChat.typingUsers : null;
         return (
             <React.Fragment>
                 {
@@ -151,6 +136,7 @@ class ChatSocketContainer extends React.Component {
                                     <Messages
                                         messages={activeChat.messages}
                                         user={this.props.user}
+                                        typingUsers={typingUsers}
                                     />
                                     <MessageInput
                                         logoutFromChat={this.logoutFromChat}
