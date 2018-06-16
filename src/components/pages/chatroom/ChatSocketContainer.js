@@ -12,13 +12,28 @@ const factories = require('../../../../factories');
 import {MESSAGE_SENT, TYPING, MESSAGE_RECEIVED, LOGOUT} from '../../../../events';
 
 class ChatSocketContainer extends React.Component {
+    /* eslint-disable react/prop-types */
 
     constructor(props) {
         super(props);
     }
 
+    // static propTypes = {
+    //     activeChat : propTypes.object.isRequired,
+    //     user : propTypes.object.isRequired,
+    //     socket : propTypes.object.isRequired,
+    //     setUser : propTypes.func.isRequired,
+    //     setSocket : propTypes.func.isRequired,
+    //     addUserToChat : propTypes.func.isRequired,
+    //     logOutUserFromChat : propTypes.func.isRequired,
+    //     setActiveChat : propTypes.func.isRequired,
+    //     addMessageToChat : propTypes.func.isRequired,
+    //     updateTypingInChat : propTypes.func.isRequired,
+    //
+    // };
+
     /**
-     * Get socket, user and activeChat objects and set in to Redux store on component mount
+     * Gets socket, user and activeChat objects and set in to Redux store on component mount
      */
     componentDidMount() {
         let socket;
@@ -38,7 +53,7 @@ class ChatSocketContainer extends React.Component {
         if (user && activeChat) {
             this.props.addUserToChat(user);
         }
-    };
+    }
 
 
 
@@ -48,7 +63,7 @@ class ChatSocketContainer extends React.Component {
      */
     initSocket = () => {
         const socket = io(config.socketio.socketURL);
-        socket.on('connect', () => console.log(socket));
+        socket.on('connect', () => {});
         return socket;
     };
 
@@ -152,5 +167,5 @@ class ChatSocketContainer extends React.Component {
         )
     }
 }
-
+/* eslint-enable react/prop-types */
 export default ChatSocketContainer;

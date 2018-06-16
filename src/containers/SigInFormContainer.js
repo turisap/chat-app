@@ -1,11 +1,9 @@
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import SignInFrom from '../components/auth/SignInForm';
 import {setUser} from '../actions/userActions';
-import {addUserToChat} from "../actions/chatActions";
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
     authenticated : state.userData.authenticated,
     user : state.userData.user,
     socket : state.chatData.socket,

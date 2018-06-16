@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 
 
 export default (ComposedComponent) => {
+    /* eslint-disable react/prop-types */
     class Authentication extends React.Component {
 
         /**
@@ -26,7 +27,7 @@ export default (ComposedComponent) => {
          * Redirects user from the component after one sign out
          * @param nextProps
          */
-        componentWillUpdate(nextProps) {
+        UNSAFE_componentWillUpdate(nextProps) {
             if(!nextProps.authenticated) {
                 this.props.history.push('/signin');
             }

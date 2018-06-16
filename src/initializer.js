@@ -2,8 +2,7 @@
 function Initializer() {
 
     this.init = () => {
-        // ChatSocketContainer.initSocket();
-        console.log('INITIALIZER')
+        //console.log('INITIALIZER')
     };
 
 }

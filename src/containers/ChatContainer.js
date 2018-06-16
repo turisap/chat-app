@@ -1,11 +1,10 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import {addMessage, setSocket, setUser, logoutFromChat, setActiveChat, addUserToChat, updateTypingInChat} from '../actions/chatActions';
 
 import ChatSocketContainer from '../components/pages/chatroom/ChatSocketContainer';
 
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
     messages : state.chatData.messages,
     socket   : state.chatData.socket,
     user     : state.userData.user,

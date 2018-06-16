@@ -27,7 +27,7 @@ class Messages  extends React.Component {
     };
 
 
-    componentDidUpdate = (prevProps, prevState) => {
+    componentDidUpdate = () => {
         this.scrollOnMount();
     };
 
@@ -72,12 +72,16 @@ Messages.propTypes = {
     messages : propTypes.arrayOf(
         propTypes.shape({
             id : propTypes.string.isRequired,
-            fromMe : propTypes.bool.isRequired,
-            username : propTypes.string.isRequired,
-            date : propTypes.string.isRequired,
+            sender : propTypes.string.isRequired,
+            time : propTypes.string.isRequired,
             message : propTypes.string.isRequired
         })
-    )
+    ),
+    typingUsers : propTypes.array.isRequired,
+    user : propTypes.shape({
+        id : propTypes.string.isRequired,
+        username : propTypes.string.isRequired
+    }).isRequired
 };
 
 export default Messages;

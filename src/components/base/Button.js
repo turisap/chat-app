@@ -15,7 +15,7 @@ const Button = props => (
 
 Button.propTypes = {
     title : propTypes.string.isRequired,
-    // buttonClickHandler : propTypes.func.isRequired
+    buttonClickHandler : propTypes.func
 };
 
 

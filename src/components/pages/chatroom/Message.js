@@ -20,12 +20,12 @@ const Message = ({fromMe, sender, time, message}) => (
 );
 
 
-/*Message.propTypes = {
+Message.propTypes = {
     fromMe : propTypes.bool.isRequired,
-    username : propTypes.string.isRequired,
-    date    : propTypes.string.isRequired,
+    sender : propTypes.string.isRequired,
+    time   : propTypes.string.isRequired,
     message    : propTypes.string.isRequired
 
-};*/
+};
 
 export default Message;

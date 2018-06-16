@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Input from '../base/Input'
 import * as events from '../../../events';
@@ -14,14 +15,21 @@ class LoginForm extends Component {
         }
     }
 
+    static propTypes = {
+        socket : PropTypes.object.isRequired,
+        setUser : PropTypes.func.isRequired
+    };
+
     /**
      * Redirect on successful login
      * @param nextProps
      */
-    componentWillUpdate(nextProps) {
+    UNSAFE_componentWillUpdate(nextProps) {
+        /* eslint-disable react/prop-types*/
         if(nextProps.authenticated) {
             this.props.history.push('/chat');
         }
+        /* eslint-enable react/prop-types*/
     }
 
     /**
@@ -74,5 +82,6 @@ class LoginForm extends Component {
         )
     }
 }
+
 
 export default LoginForm;

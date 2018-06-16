@@ -21,9 +21,16 @@ class Input extends Component {
 
     static propTypes = {
         type : PropTypes.string.isRequired,
+        label : PropTypes.string,
+        placeholder : PropTypes.string.isRequired,
+        id : PropTypes.string,
+        class : PropTypes.string,
+        error : PropTypes.string,
+        onChange : PropTypes.func.isRequired,
+
     };
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps) {
         if(prevProps.error && !this.state.error) {
             this.setState({error:prevProps.error})
         }

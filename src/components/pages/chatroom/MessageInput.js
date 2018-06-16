@@ -83,6 +83,7 @@
 // export default MessageInput;
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Button from '../../base/Button';
 
@@ -95,6 +96,11 @@ class MessageInput extends Component {
             isTyping : false
         }
     }
+
+    static propTypes = {
+        sendMessageToChat : PropTypes.func.isRequired,
+        sendTypingToChat : PropTypes.func.isRequired,
+    };
 
     /**
      * Stops typing event if component is going to unmount
@@ -120,7 +126,6 @@ class MessageInput extends Component {
      * Sets interval for checking whether or not a user is typing
      */
     startCheckingTyping = () => {
-        console.log('Start typing')
         this.typingInterval = setInterval(() => {
             if((Date.now() - this.lastUpdateTime) > 300){
                 this.setState({isTyping : false});
@@ -133,7 +138,6 @@ class MessageInput extends Component {
      * Clears interval for checking typing
      */
     stopCheckingTyping = () => {
-        console.log('stop typing')
         if(this.typingInterval) {
             clearInterval(this.typingInterval);
             this.props.sendTypingToChat(false);
