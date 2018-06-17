@@ -6,8 +6,25 @@ import RequireAuth from './auth/RequireAuth';
 
 import { ChatReduxContainer } from '../containers/ChatContainer';
 import { SignInFormReduxContainer } from '../containers/SigInFormContainer';
+import io from "socket.io-client";
+import config from "../config/chatConfig";
 
 export default class Router extends React.Component {
+    /* eslint-disable react/prop-types */
+
+    /**
+     * Application initializing andk subscriptions
+     */
+    componentDidMount() {
+        if(!this.props.socket) {
+            const socket = io(config.socketio.socketURL);
+            socket.on('connect', () => {this.props.setSocket(socket)});
+        }
+    }
+    /* eslint-enable react/prop-types */
+
+    
+
      render() {
         return(
             <BrowserRouter>

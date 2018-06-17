@@ -18,32 +18,17 @@ class ChatSocketContainer extends React.Component {
         super(props);
     }
 
-    // static propTypes = {
-    //     activeChat : propTypes.object.isRequired,
-    //     user : propTypes.object.isRequired,
-    //     socket : propTypes.object.isRequired,
-    //     setUser : propTypes.func.isRequired,
-    //     setSocket : propTypes.func.isRequired,
-    //     addUserToChat : propTypes.func.isRequired,
-    //     logOutUserFromChat : propTypes.func.isRequired,
-    //     setActiveChat : propTypes.func.isRequired,
-    //     addMessageToChat : propTypes.func.isRequired,
-    //     updateTypingInChat : propTypes.func.isRequired,
-    //
-    // };
 
     /**
      * Gets socket, user and activeChat objects and set in to Redux store on component mount
      */
     componentDidMount() {
-        let socket;
+        const {activeChat, user, socket} = this.props;
 
-        const {activeChat, user} = this.props;
-
-        if (!this.props.socket) {
+        /*if (!this.props.socket) {
             socket = this.initSocket();
             this.props.setSocket(socket);
-        }
+        }*/
         if (!activeChat) {
             const newChat = factories.createChat({name});
             this.props.setActiveChat(newChat);
