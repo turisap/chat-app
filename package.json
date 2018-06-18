@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --env.production",
-    "watch": "webpack-dev-server --env.development --mode=none --host=127.32.32.32",
+    "watch": "webpack-dev-server --env.development --mode=none ",
     "server": "cd server && npm run server",
-    "app": "concurrently \"npm run watch\" \"npm run server\""
+    "app": "concurrently \"npm run watch\" \"npm run server\"",
+    "host" : "--host=127.32.32.32"
   },
   "author": "turisap",
   "license": "ISC",
@@ -49,6 +50,7 @@
     "react-icons": "^2.2.7",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "redis": "^2.8.0",
     "redux": "^4.0.0",
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.81.1",
