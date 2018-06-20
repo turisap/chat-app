@@ -1,22 +1,36 @@
-var redis = require("redis"),
-    client = redis.createClient();
+const redis = require("redis");
+const client = redis.createClient();
+const bluebird = require('bluebird');
 
-// if you'd like to select database 3, instead of 0 (default), call
-// client.select(3, function() { /* ... */ });
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
 
-client.on("error", function (err) {
-    console.log("Error " + err);
-});
+function RedisController (chatId) {
 
-client.set("string key", "string val", redis.print);
-client.hset("hash key", "hashtest 1", "some value", redis.print);
-client.hset(["hash key", "hashtest 2", "some other value"], redis.print);
-client.hkeys("hash key", function (err, replies) {
-    console.log(replies.length + " replies:");
-    replies.forEach(function (reply, i) {
-        console.log("    " + i + ": " + reply);
-    });
-    client.quit();
-});
+    this.saveMessage = (message) => {
+        client.lpushAsync(`chat:${this.chatId}`, JSON.stringify(message))
+            .then(data => console.log('SAVE ' + data));
+    };
 
-client.on('ready', () => console.log('redis is in here!'));
+    this.getMessages = async function getMessages() {
+        const messages =  client.lrangeAsync(`chat:${this.chatId}`, 0, -1);
+        console.log('Controller' + messages);
+        return messages;
+    };
+
+
+    this.test = () => {
+        client.setAsync('key', 'value!', 'EX', 10)
+            .then(data => console.log('TEST ' + data));
+        client.getAsync('key')
+            .then(data => console.log(data));
+    };
+
+    this.init = () => {
+        this.chatId = chatId;
+    };
+
+    this.init();
+}
+
+module.exports = RedisController;

@@ -9,7 +9,7 @@
     "watch": "webpack-dev-server --env.development --mode=none ",
     "server": "cd server && npm run server",
     "app": "concurrently \"npm run watch\" \"npm run server\"",
-    "host" : "--host=127.32.32.32"
+    "host": "--host=127.32.32.32"
   },
   "author": "turisap",
   "license": "ISC",
@@ -41,6 +41,8 @@
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.3",
     "chance": "^1.0.16",
     "classnames": "^2.2.5",
     "moment": "^2.22.1",
