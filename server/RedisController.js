@@ -1,21 +1,51 @@
 const redis = require("redis");
 const client = redis.createClient();
 const bluebird = require('bluebird');
+const winston = require('winston');
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
+const logger = winston.createLogger({
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: 'combined.log' })
+    ]
+});
+
 function RedisController (chatId) {
 
-    this.saveMessage = (message) => {
-        client.lpushAsync(`chat:${this.chatId}`, JSON.stringify(message))
-            .then(data => console.log('SAVE ' + data));
+    /**
+     * Saves a messages to Redis based on chat ID
+     * @param message
+     * @returns {Promise<*>}
+     */
+    this.saveMessage = async function(message) {
+        try {
+            return await client.lpushAsync(`chat:${this.chatId}`, JSON.stringify(message));
+        } catch (e) {
+            if (process.env.DEBUG) console.log(e);
+            logger.log({
+                level : 'info',
+                message : e
+            })
+        }
     };
 
-    this.getMessages = async function getMessages() {
-        const messages =  client.lrangeAsync(`chat:${this.chatId}`, 0, -1);
-        console.log('Controller' + messages);
-        return messages;
+    /**
+     * Gets all messages for a given chat
+     * @returns {Promise<*>}
+     */
+    this.getMessages = async function() {
+        try {
+            return await client.lrangeAsync(`chat:${this.chatId}`, 0, -1);
+        } catch (e) {
+            if (process.env.DEBUG) console.log(e);
+            logger.log({
+                level : 'info',
+                message : e
+            })
+        }
     };
 
 
