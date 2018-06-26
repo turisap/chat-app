@@ -30,6 +30,7 @@ router.post('/message', (req, res, next) => {
  * Gets all chat's messages based on id
  */
 router.get('/messages', (req, res, next) => {
+    console.log('FROM SERVER' + req.body)
     ChatRedisController = new RedisController(req.get('chatId'));
     ChatRedisController.getMessages()
         .then(messages => {

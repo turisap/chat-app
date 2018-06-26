@@ -1,4 +1,6 @@
 import * as types from './types';
+import axios from 'axios';
+import config from '../config/chatConfig';
 
 /**
  * Adds a message to array of messages in state
@@ -6,11 +8,22 @@ import * as types from './types';
  * @param message
  * @returns {{type: string, chatId: *, message: *}}
  */
-export const addMessage = (chatId, message) => ({
-    type : types.ADD_CHAT_MESSAGE,
-    chatId,
-    message
-});
+export const addMessage = (chatId, message) => dispatch => {
+    const url = `${config.server.baseURL}/chat/message`;
+    const param = new URLSearchParams;
+    param.append('chatId', chatId);
+    param.append('message', message);
+    axios.post(url, param)
+        .then(resp => {
+            console.log(resp);
+            dispatch({
+                type : types.ADD_CHAT_MESSAGE,
+                chatId,
+                message
+            })
+        })
+        .catch(e => console.log(e));
+};
 
 /**
  * Sets socket property to the state

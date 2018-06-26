@@ -2,6 +2,7 @@ const server = require('http').createServer();
 const express = require('express');
 const bodyParser = require("body-parser");
 const app = express();
+const cors = require('cors');
 const io = module.exports.io = require('socket.io')(server);
 
 
@@ -10,6 +11,8 @@ const ChatRouter = require('./routs/ChatRouter');
 
 
 const PORT = process.env.PORT || 8080;
+
+app.use(cors());
 
 server.listen(PORT, () => console.log("Connected to port", PORT));
 app.listen(3000, () => console.log('EXPRESS'));
