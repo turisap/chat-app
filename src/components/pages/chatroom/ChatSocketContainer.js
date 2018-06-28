@@ -1,11 +1,9 @@
 import React from 'react';
-import io from 'socket.io-client';
 
 import Messages from './Messages';
 import MessageInput from './MessageInput';
 import SideBar from './SideBar';
 import ChatHeading from './ChatHeading';
-import config from '../../../config/chatConfig';
 
 const factories = require('../../../../factories');
 
@@ -37,20 +35,20 @@ class ChatSocketContainer extends React.Component {
 
         if (user && activeChat) {
             this.props.addUserToChat(user);
+            this.props.getMessagesFromServer(activeChat.id);
         }
+
     }
-
-
 
     /**
      * Initialize socket connection
      * @returns {*}
      */
-    initSocket = () => {
+    /*initSocket = () => {
         const socket = io(config.socketio.socketURL);
         socket.on('connect', () => {});
         return socket;
-    };
+    };*/
 
 
 
@@ -119,6 +117,7 @@ class ChatSocketContainer extends React.Component {
         socket.on(messageEvent, this.addMessageToChat(newChat.id));
         socket.on(typingEvent, this.updateTypingInChat(newChat.id));
     };
+
 
 
     render () {

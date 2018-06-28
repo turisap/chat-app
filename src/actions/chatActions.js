@@ -2,6 +2,8 @@ import * as types from './types';
 import axios from 'axios';
 import config from '../config/chatConfig';
 
+
+
 /**
  * Adds a message to array of messages in state
  * @param chatId
@@ -13,9 +15,9 @@ export const addMessage = (chatId, message) => dispatch => {
     const param = new URLSearchParams;
     param.append('chatId', chatId);
     param.append('message', message);
-    axios.post(url, param)
+    axios.post(url, {chatId, message})
         .then(resp => {
-            console.log(resp);
+            if (window.DEBUG) console.log(resp);
             dispatch({
                 type : types.ADD_CHAT_MESSAGE,
                 chatId,
@@ -24,6 +26,26 @@ export const addMessage = (chatId, message) => dispatch => {
         })
         .catch(e => console.log(e));
 };
+
+
+
+/**
+ * Fetches messages from a server based on chat id and sets them into Redux store
+ * @param chatId
+ * @returns {Function}
+ */
+export const getMessages = chatId => dispatch => {
+    axios.get(`${config.server.baseURL}/chat/messages`, {headers :{chatId}})
+        .then(resp => {
+            if (window.DEBUG) console.log(resp.data.messages);
+            dispatch({
+                type: types.SET_MESSAGES,
+                messages : resp.data.messages
+            })
+        })
+        .catch(e => console.log(e))
+};
+
 
 /**
  * Sets socket property to the state

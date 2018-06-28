@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import {addMessage, setSocket, setUser, logoutFromChat, setActiveChat, addUserToChat, updateTypingInChat} from '../actions/chatActions';
+import {addMessage, setSocket, getMessages, setUser, logoutFromChat, setActiveChat, addUserToChat, updateTypingInChat} from '../actions/chatActions';
 
 import ChatSocketContainer from '../components/pages/chatroom/ChatSocketContainer';
 
@@ -18,7 +18,8 @@ const mapDispatchToProps = dispatch => ({
     logOutUserFromChat : chatId => dispatch(logoutFromChat(chatId)),
     setActiveChat : chat => dispatch(setActiveChat(chat)),
     addUserToChat : user => dispatch(addUserToChat(user)),
-    updateTypingInChat : (chatId, user, isTyping) => dispatch(updateTypingInChat(chatId, user, isTyping))
+    updateTypingInChat : (chatId, user, isTyping) => dispatch(updateTypingInChat(chatId, user, isTyping)),
+    getMessagesFromServer : chatId => dispatch(getMessages(chatId))
 });
 
 

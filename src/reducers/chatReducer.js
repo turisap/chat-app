@@ -49,6 +49,14 @@ export default (state=chatReducerDefaultState, action) => {
                     typingUsers: updateTypingUsers(state.activeChat.typingUsers, action.user, action.isTyping)
                 }
             };
+        case chatActions.SET_MESSAGES:
+            return {
+                ...state,
+                activeChat : {
+                    ...state.activeChat,
+                    messages : action.messages.map(m => JSON.parse(m))
+                }
+            };
         default:
             return state;
     }

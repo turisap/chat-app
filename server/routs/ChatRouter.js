@@ -14,7 +14,9 @@ let ChatRedisController;
  */
 router.post('/message', (req, res, next) => {
     ChatRedisController = new RedisController(req.body.chatId);
-    ChatRedisController.saveMessage(req.body.message)
+    const json = JSON.stringify(req.body.message);
+    console.log(json)
+    ChatRedisController.saveMessage(json)
         .then(resp => {
             if (process.env.DEBUG) console.log(resp);
             res.send({success : true});

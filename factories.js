@@ -24,12 +24,12 @@ const createMessage = ({message = "", sender = ""} = {}) => ({
  * Creates a chat
  */
 const createChat = ({messages = [], name = 'test', users = []} = {}) => ({
-    id :  1,
+    id :  9,
     name,
     messages,
     users,
     typingUsers : []
-})
+});
 
 module.exports = {
     createChat,

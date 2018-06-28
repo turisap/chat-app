@@ -37,7 +37,7 @@ class Messages  extends React.Component {
         return (
             <React.Fragment>
                 <div className="messages__container" ref={this.messageContainer}>
-                    {messages && messages.map((m,i)=> {
+                    {messages.length && messages.map((m,i)=> {
                         const { time, sender, message} = m;
                         const fromMe = sender === user.username;
                         return (
