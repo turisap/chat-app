@@ -100,6 +100,11 @@ function RedisController (chatId) {
     };
 
 
+    this.flushAll = async function () {
+        return await client.del(`chat:${this.chatId}`);
+    }
+
+
 
     /**
      * Controller initializer

@@ -40,6 +40,7 @@ class ChatSocketContainer extends React.Component {
 
     }
 
+
     /**
      * Initialize socket connection
      * @returns {*}
@@ -72,6 +73,7 @@ class ChatSocketContainer extends React.Component {
         const { socket } = this.props;
         socket.emit(MESSAGE_SENT, {chatId, message});
     };
+
 
     /**
      * Sends a typing event to a chat

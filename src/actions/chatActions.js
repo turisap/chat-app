@@ -37,10 +37,11 @@ export const addMessage = (chatId, message) => dispatch => {
 export const getMessages = chatId => dispatch => {
     axios.get(`${config.server.baseURL}/chat/messages`, {headers :{chatId}})
         .then(resp => {
-            if (window.DEBUG) console.log(resp.data.messages);
+            const messages = resp.data.messages.map(m => JSON.parse(JSON.parse(m)));
+            if (window.DEBUG) console.log(messages);
             dispatch({
                 type: types.SET_MESSAGES,
-                messages : resp.data.messages
+                messages
             })
         })
         .catch(e => console.log(e))

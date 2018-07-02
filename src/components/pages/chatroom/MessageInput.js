@@ -115,12 +115,14 @@ class MessageInput extends Component {
         this.setState({message: ''});
     };
 
+
     /**
      * Send a message to a particular chat
      */
     sendMessage = () => {
         this.props.sendMessageToChat(this.state.message);
     };
+
 
     /**
      * Sets interval for checking whether or not a user is typing

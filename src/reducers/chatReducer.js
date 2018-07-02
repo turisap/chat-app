@@ -23,11 +23,11 @@ export default (state=chatReducerDefaultState, action) => {
                 ...state,
                 socket : action.socket
             };
-        case chatActions.LOGOUT_FROM_CHAT:
-            return {
-                ...state,
-                chats : state.chats.filter(chat => action.chatId !== chat.id)
-            };
+        // case chatActions.LOGOUT_FROM_CHAT:
+        //     return {
+        //         ...state,
+        //         chats : state.chats.filter(chat => action.chatId !== chat.id)
+        //     };
         case chatActions.SET_ACTIVE_CHAT:
             return {
                 ...state,
@@ -54,7 +54,7 @@ export default (state=chatReducerDefaultState, action) => {
                 ...state,
                 activeChat : {
                     ...state.activeChat,
-                    messages : action.messages.map(m => JSON.parse(m))
+                    messages : action.messages
                 }
             };
         default:

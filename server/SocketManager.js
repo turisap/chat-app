@@ -69,6 +69,7 @@ function removeUser(userList, username) {
     return newList;
 }
 
+
 /**
  *  Checks if a user is in list which passed in
  */
@@ -77,6 +78,7 @@ function isUser(userList, userName) {
     return userName in userList;
 }
 
+
 /**
  * Emits event of sending message in a chat
  * @param sender
@@ -84,9 +86,10 @@ function isUser(userList, userName) {
  */
 function sendMessageToChat(sender) {
     return (chatId, message) => {
-        io.emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage({message, sender}));
+        io.emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage({message, sender, chatId}));
     }
 }
+
 
 /**
  * Sends typing events to all users

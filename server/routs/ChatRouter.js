@@ -32,7 +32,7 @@ router.post('/message', (req, res, next) => {
  * Gets all chat's messages based on id
  */
 router.get('/messages', (req, res, next) => {
-    console.log('FROM SERVER' + req.body)
+    console.log('FROM SERVER' + req.body);
     ChatRedisController = new RedisController(req.get('chatId'));
     ChatRedisController.getMessages()
         .then(messages => {
@@ -72,7 +72,7 @@ router.get('/users', (req, res, next) => {
 
 
 /**
- * Saves a given user to a chat users array if it does not present there
+ * Saves a given user to a chat users array if it is not present there
  */
 router.post('/user', (req, res, next) => {
     ChatRedisController = new RedisController(req.body.chatId);
@@ -85,9 +85,9 @@ router.post('/user', (req, res, next) => {
 
 
 router.post('/test', (req, res, next) => {
-    const ChatRedisController = new RedisController(125);
-    ChatRedisController.test()
-        .then(data => console.log(data));
+    const ChatRedisController = new RedisController(9);
+    ChatRedisController.flushAll()
+        .then(res.send('FLUSHED'));
 });
 
 

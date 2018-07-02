@@ -16,7 +16,7 @@ export default class Router extends React.Component {
      * Application initializing andk subscriptions
      */
     componentDidMount() {
-        if(!this.props.socket) {
+        if (!this.props.socket) {
             const socket = io(config.socketio.socketURL);
             socket.on('connect', () => {this.props.setSocket(socket)});
         }
