@@ -44,8 +44,9 @@ export const getMessages = chatId => dispatch => {
                 messages
             })
         })
-        .catch(e => console.log(e))
+        .catch(e => console.log(e));
 };
+
 
 
 /**
@@ -59,6 +60,7 @@ export const setSocket = (socket) => ({
 });
 
 
+
 /**
  * Logs a current user out of a chat
  */
@@ -66,6 +68,7 @@ export const logoutFromChat = (chatId) => ({
     type : types.LOGOUT_FROM_CHAT,
     chatId
 });
+
 
 
 /**
@@ -79,15 +82,46 @@ export const setActiveChat = (chat) => ({
 });
 
 
+
 /**
  * Adds a given user to chat's users array
  * @param user
  * @returns {{type: string, user: *, chatId: *}}
  */
-export const addUserToChat = (user) => ({
-    type : types.ADD_USER_TO_CHAT,
-    user
-});
+export const addUserToChat = (user, chatId) => dispatch => {
+    const url = `${config.server.baseURL}/chat/user`;
+    axios.post(url, {user, chatId})
+        .then(resp => {
+            //if (window.DEBUG) console.log(resp);
+            dispatch({
+                type : types.ADD_USER_TO_CHAT,
+                user,
+                resp
+            });
+        })
+        .catch(e => {if(window.DEBUG) console.log(e)});
+};
+
+
+/**
+ * Retrieves a user list from server based on chatId and sets it to the Redux store.
+ * @param chatId
+ * @returns {Function}
+ */
+export const getChatUsersFromServer = chatId => dispatch => {
+    const url = `${config.server.baseURL}/chat/users`;
+    axios.get(url, {headers : {chatId}})
+        .then(resp => {
+            const users = resp.data.users.map(u => JSON.parse(u));
+            if(window.DEBUG) console.log('USERLIST', users);
+            dispatch({
+                type : types.SET_USERLIST,
+                users
+            })
+        })
+        .catch(e => console.log(e.response.data))
+};
+
 
 
 /**

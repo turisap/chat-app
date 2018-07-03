@@ -57,6 +57,14 @@ export default (state=chatReducerDefaultState, action) => {
                     messages : action.messages
                 }
             };
+        case chatActions.SET_USERLIST:
+            return {
+                ...state,
+                activeChat : {
+                    ...state.activeChat,
+                    users : state.activeChat.users
+                }
+            };
         default:
             return state;
     }

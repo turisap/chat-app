@@ -21,7 +21,7 @@ class ChatSocketContainer extends React.Component {
      * Gets socket, user and activeChat objects and set in to Redux store on component mount
      */
     componentDidMount() {
-        const {activeChat, user, socket} = this.props;
+        const {activeChat, user, socket, userlist} = this.props;
 
         /*if (!this.props.socket) {
             socket = this.initSocket();
@@ -34,10 +34,13 @@ class ChatSocketContainer extends React.Component {
         }
 
         if (user && activeChat) {
-            this.props.addUserToChat(user);
+            this.props.addUserToChat(user, activeChat.id);
             this.props.getMessagesFromServer(activeChat.id);
         }
 
+        if(!userlist && activeChat) {
+            this.props.getUserListFromServer(activeChat.id)
+        }
     }
 
 

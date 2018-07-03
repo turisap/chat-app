@@ -69,14 +69,11 @@ function RedisController (chatId) {
      * @param user
      * @returns {Promise<boolean>}
      */
-    this.addUserToChat = async function({chatId, user}) {
+    this.addUserToChat = async function(user) {
         try {
             const exists = await userAlreadyIsInChat(chatId, user);
             if (exists) return false;
-
-            await client.lpushAsync(`chat:${chatId}:users`, user);
-            // this.test(chatId)
-            //     .then(data => console.log(data))
+            await client.lpushAsync(`chat:${this.chatId}:users`, user);
             return true;
         } catch(e) {
             if (process.env.DEBUG) console.log(e);
@@ -100,9 +97,14 @@ function RedisController (chatId) {
     };
 
 
+    /**
+     * Flushes a chat
+     * @returns {Promise<*>}
+     */
     this.flushAll = async function () {
+        await client.del(`chat:${this.chatId}:users`);
         return await client.del(`chat:${this.chatId}`);
-    }
+    };
 
 
 
