@@ -62,7 +62,7 @@ export default (state=chatReducerDefaultState, action) => {
                 ...state,
                 activeChat : {
                     ...state.activeChat,
-                    users : state.activeChat.users
+                    users : action.users
                 }
             };
         default:
@@ -70,6 +70,7 @@ export default (state=chatReducerDefaultState, action) => {
     }
 
 }
+
 
 
 /**

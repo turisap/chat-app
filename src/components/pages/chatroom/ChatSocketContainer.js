@@ -39,7 +39,7 @@ class ChatSocketContainer extends React.Component {
         }
 
         if(!userlist && activeChat) {
-            this.props.getUserListFromServer(activeChat.id)
+            this.props.getUserListFromServer(activeChat.id);
         }
     }
 
@@ -132,9 +132,10 @@ class ChatSocketContainer extends React.Component {
             <React.Fragment>
                 {
                     activeChat &&
-                        <div>
-                            <SideBar/>
                             <div className="chat__mainContainer">
+                                <SideBar
+                                    userList={activeChat.users}
+                                />
                                 <div className="chatBox__container">
                                     <ChatHeading />
                                     <Messages
@@ -149,8 +150,6 @@ class ChatSocketContainer extends React.Component {
                                     />
                                 </div>
                             </div>
-                        </div>
-
                 }
             </React.Fragment>
         )

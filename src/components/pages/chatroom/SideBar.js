@@ -1,19 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 
-class SideBar extends React.Component {
-    constructor(props) {
-        super(props)
-    }
+const SideBar = props => (
+    <div className={"userlist__main"}>
+        {props.userList.map(user => <div key={user.id}>{user.username}</div>)}
+    </div>
+);
 
-    render() {
-        return (
-            <div id="side-bar">
-                <h1>SideBar</h1>
-            </div>
-        );
 
-    }
-}
+SideBar.propTypes = {
+    userList : PropTypes.array.isRequired
+};
 
 export default SideBar;
