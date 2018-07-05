@@ -38,12 +38,13 @@ class Messages  extends React.Component {
             <React.Fragment>
                 <div className="messages__container" ref={this.messageContainer}>
                     {messages.length && messages.map((m,i)=> {
-                        const { time, sender, message} = m;
+                        const { time, timeStamp, sender, message} = m;
                         const fromMe = sender === user.username;
                         return (
                             <Message
                                 fromMe={fromMe}
                                 sender={sender}
+                                timeStamp={timeStamp}
                                 time={time}
                                 message={message}
                                 key={i}
@@ -73,6 +74,7 @@ Messages.propTypes = {
         propTypes.shape({
             id : propTypes.string.isRequired,
             sender : propTypes.string.isRequired,
+            timeStamp : propTypes.number.isRequired,
             time : propTypes.string.isRequired,
             message : propTypes.string.isRequired
         })

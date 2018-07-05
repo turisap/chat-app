@@ -54,7 +54,7 @@ export default (state=chatReducerDefaultState, action) => {
                 ...state,
                 activeChat : {
                     ...state.activeChat,
-                    messages : action.messages
+                    messages : sortMessages(action.messages)
                 }
             };
         case chatActions.SET_USERLIST:
@@ -104,4 +104,9 @@ function updateTypingUsers (typingUsers, user, isTyping) {
         }
         return true;
     });
+}
+
+
+function sortMessages (messages) {
+    return messages.sort((a, b) => parseInt(a.timeStamp) - parseInt(b.timeStamp))
 }

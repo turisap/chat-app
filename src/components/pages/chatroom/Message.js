@@ -23,7 +23,8 @@ const Message = ({fromMe, sender, time, message}) => (
 Message.propTypes = {
     fromMe : propTypes.bool.isRequired,
     sender : propTypes.string.isRequired,
-    time   : propTypes.string.isRequired,
+    timeStamp   : propTypes.number.isRequired,
+    time : propTypes.string.isRequired,
     message    : propTypes.string.isRequired
 
 };
