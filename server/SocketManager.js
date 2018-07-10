@@ -1,15 +1,17 @@
 const io = require('./index.js').io;
-const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING} = require('../events');
+const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED,
+    MESSAGE_RECEIVED, MESSAGE_SENT, TYPING, NEW_USER_JOINED, NOTIFICATION} = require('../events');
 const { createUser, createMessage} = require('../factories');
 
 let connectedUsers = {};
 
 
 module.exports = function (socket) {
-    console.log("Socket ID:" + socket.id);
+    //console.log("Socket ID:" + socket.id);
 
     let sendMessageToChatFromUser;
     let sendTypingToChatFromUser;
+
     /**
      * Verification of username existence on the "back-end"
      * SHOULD BE REVISED
@@ -22,6 +24,8 @@ module.exports = function (socket) {
         }
     });
 
+
+    // fires after user logs in
     socket.on(USER_CONNECTED, (user) => {
         connectedUsers = addUser(connectedUsers, user);
         //setting kind of global for socket. I also stored it into the Redux Store.
@@ -29,6 +33,8 @@ module.exports = function (socket) {
         sendMessageToChatFromUser = sendMessageToChat(user.username);
         sendTypingToChatFromUser  = sendTypingToChat(user);
     });
+
+
 
     // need to pass a callback to here and remove a user from a chat
     socket.on('disconnect', () => {
@@ -38,14 +44,26 @@ module.exports = function (socket) {
         }
     });
 
+
+
     // sends a message to a chat from a particular user
     socket.on(MESSAGE_SENT, ({chatId, message}) => {
         sendMessageToChatFromUser(chatId, message);
     });
 
+
+
+    // fires on user's typing event
     socket.on(TYPING, ({chatId, isTyping}) => {
         sendTypingToChatFromUser(chatId, isTyping)
     });
+
+
+
+    // fires a notification for joining of a new user
+    socket.on(NEW_USER_JOINED, ({user, chatId}) => {
+        io.emit(`${NOTIFICATION}-${chatId}`, user);
+    })
 };
 
 
@@ -62,7 +80,6 @@ function addUser (userList, user) {
 /**
  *  Removes a user from the list
  */
-
 function removeUser(userList, username) {
     let newList = Object.assign({}, userList);
     delete newList[username];
@@ -80,7 +97,7 @@ function isUser(userList, userName) {
 
 
 /**
- * Emits event of sending message in a chat
+ * A higher order function, emits event of sending message in a chat
  * @param sender
  * @returns {Function}
  */
@@ -92,7 +109,7 @@ function sendMessageToChat(sender) {
 
 
 /**
- * Sends typing events to all users
+ * A higher order function, sends typing events to all users
  * @param user
  * @returns {Function}
  */
@@ -101,3 +118,5 @@ function sendTypingToChat(user) {
         io.emit(`${TYPING}-${chatId}`, {user, isTyping});
     }
 }
+
+

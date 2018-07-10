@@ -32,6 +32,7 @@ class LoginForm extends Component {
         /* eslint-enable react/prop-types*/
     }
 
+
     /**
      * Sets current user or return with an error if a username is already taken
      * @param user
@@ -51,6 +52,7 @@ class LoginForm extends Component {
         this.setError('');
         this.props.setUser(user);
     };
+
 
     /**
      * Sets an error property to a given string

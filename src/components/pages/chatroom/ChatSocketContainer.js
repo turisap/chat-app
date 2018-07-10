@@ -7,7 +7,7 @@ import ChatHeading from './ChatHeading';
 
 const factories = require('../../../../factories');
 
-import {MESSAGE_SENT, TYPING, MESSAGE_RECEIVED, LOGOUT} from '../../../../events';
+import {MESSAGE_SENT, TYPING, MESSAGE_RECEIVED, LOGOUT, NOTIFICATION} from '../../../../events';
 
 class ChatSocketContainer extends React.Component {
     /* eslint-disable react/prop-types */
@@ -23,10 +23,6 @@ class ChatSocketContainer extends React.Component {
     componentDidMount() {
         const {activeChat, user, socket, userlist} = this.props;
 
-        /*if (!this.props.socket) {
-            socket = this.initSocket();
-            this.props.setSocket(socket);
-        }*/
         if (!activeChat) {
             const newChat = factories.createChat({name});
             this.props.setActiveChat(newChat);
@@ -34,7 +30,7 @@ class ChatSocketContainer extends React.Component {
         }
 
         if (user && activeChat) {
-            this.props.addUserToChat(user, activeChat.id);
+            this.props.addUserToChat(user, activeChat.id, socket);
             this.props.getMessagesFromServer(activeChat.id);
         }
 
@@ -42,18 +38,6 @@ class ChatSocketContainer extends React.Component {
             this.props.getUserListFromServer(activeChat.id);
         }
     }
-
-
-    /**
-     * Initialize socket connection
-     * @returns {*}
-     */
-    /*initSocket = () => {
-        const socket = io(config.socketio.socketURL);
-        socket.on('connect', () => {});
-        return socket;
-    };*/
-
 
 
     /**
@@ -67,6 +51,7 @@ class ChatSocketContainer extends React.Component {
     };
 
 
+
     /**
      * Sends a message to a particular chat
      * @param chatId
@@ -76,6 +61,7 @@ class ChatSocketContainer extends React.Component {
         const { socket } = this.props;
         socket.emit(MESSAGE_SENT, {chatId, message});
     };
+
 
 
     /**
@@ -89,6 +75,7 @@ class ChatSocketContainer extends React.Component {
     };
 
 
+
     /**
      * Adds a message to a particular chat
      * @param chatId
@@ -100,6 +87,8 @@ class ChatSocketContainer extends React.Component {
         }
     };
 
+
+
     /**
 	*	Updates the typing of chat with id passed in.
 	*	@param chatId {number}
@@ -110,6 +99,19 @@ class ChatSocketContainer extends React.Component {
         }
     };
 
+
+    /**
+     * Creates a notification about new user joined
+     * @param user
+     * @param chatId
+     */
+    notifyOnNewUser = (user, chatId) => {
+        this.props.notifyNewUser(user);
+        this.props.getUserListFromServer(chatId);
+    };
+
+
+
     /**
      * Creates a new chat and assigns events to it
      * @param newChat
@@ -118,30 +120,32 @@ class ChatSocketContainer extends React.Component {
     createChat = (newChat, socket) => {
         const messageEvent = `${MESSAGE_RECEIVED}-${newChat.id}`;
         const typingEvent = `${TYPING}-${newChat.id}`;
+        const notificationEvent = `${NOTIFICATION}-${newChat.id}`;
 
         socket.on(messageEvent, this.addMessageToChat(newChat.id));
         socket.on(typingEvent, this.updateTypingInChat(newChat.id));
+        socket.on(notificationEvent, user => this.notifyOnNewUser(user, newChat.id))
     };
 
 
 
     render () {
-        const { activeChat } = this.props;
+        const { activeChat, user, clearNewUsersFromRedux } = this.props;
         const typingUsers = activeChat ? activeChat.typingUsers : null;
         return (
             <React.Fragment>
                 {
                     activeChat &&
                             <div className="chat__mainContainer">
-                                <SideBar
-                                    userList={activeChat.users}
-                                />
+                                <SideBar/>
                                 <div className="chatBox__container">
                                     <ChatHeading />
                                     <Messages
                                         messages={activeChat.messages}
-                                        user={this.props.user}
+                                        user={user}
                                         typingUsers={typingUsers}
+                                        newUsers={activeChat.newUsers}
+                                        clearNewUsersFromRedux={clearNewUsersFromRedux}
                                     />
                                     <MessageInput
                                         logoutFromChat={this.logoutFromChat}
@@ -155,5 +159,7 @@ class ChatSocketContainer extends React.Component {
         )
     }
 }
+
+
 /* eslint-enable react/prop-types */
 export default ChatSocketContainer;

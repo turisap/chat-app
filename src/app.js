@@ -8,7 +8,7 @@ import './styles/styles.scss';
 
 
 // setting global debug flag to true (for development only)
-window.DEBUG = true;
+window.DEBUG = false;
 
 // initialize services for application
 appInitializer.init();

@@ -1,6 +1,7 @@
 import * as types from './types';
 import axios from 'axios';
 import config from '../config/chatConfig';
+import { NEW_USER_JOINED } from '../../events'
 
 
 
@@ -82,17 +83,19 @@ export const setActiveChat = (chat) => ({
 });
 
 
-
 /**
  * Adds a given user to chat's users array
  * @param user
- * @returns {{type: string, user: *, chatId: *}}
+ * @param chatId
+ * @param socket
+ * @returns {Function}
  */
-export const addUserToChat = (user, chatId) => dispatch => {
+export const addUserToChat = (user, chatId, socket) => dispatch => {
     const url = `${config.server.baseURL}/chat/user`;
     axios.post(url, {user, chatId})
         .then(resp => {
             //if (window.DEBUG) console.log(resp);
+            socket.emit(NEW_USER_JOINED, {user, chatId});
             dispatch({
                 type : types.ADD_USER_TO_CHAT,
                 user,
@@ -101,6 +104,7 @@ export const addUserToChat = (user, chatId) => dispatch => {
         })
         .catch(e => {if(window.DEBUG) console.log(e)});
 };
+
 
 
 /**
@@ -124,6 +128,7 @@ export const getChatUsersFromServer = chatId => dispatch => {
 
 
 
+
 /**
  * Adds or removes a given user from  chat's typingUsers array based on isTyping booleans
  * @param chatId
@@ -136,5 +141,28 @@ export const updateTypingInChat = (chatId, user, isTyping) => ({
     chatId,
     user,
     isTyping
+});
+
+
+
+
+/**
+ * Adds a given username to newUsers array in a chat
+ * @param username
+ * @returns {{type: string, username: *}}
+ */
+export const notifyNewUser = (username) => ({
+    type : types.NOTIFY_NEW_USER,
+    username
+});
+
+
+
+/**
+ * Clears array or new users after notifications have been fired
+ * @returns {{type: string}}
+ */
+export const clearNewUsers = () => ({
+   type : types.CLEAR_NEW_USERS,
 });
 

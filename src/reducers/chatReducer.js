@@ -65,6 +65,22 @@ export default (state=chatReducerDefaultState, action) => {
                     users : action.users
                 }
             };
+        case chatActions.NOTIFY_NEW_USER:
+            return {
+                ...state,
+                activeChat : {
+                    ...state.activeChat,
+                    newUsers : [...state.activeChat.newUsers, action.username]
+                }
+            };
+        case chatActions.CLEAR_NEW_USERS:
+            return {
+                ...state,
+                activeChat : {
+                    ...state.activeChat,
+                    newUsers : []
+                }
+            };
         default:
             return state;
     }

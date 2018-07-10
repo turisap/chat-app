@@ -33,7 +33,8 @@ const createChat = ({messages = [], name = 'test', users = []} = {}) => ({
     name,
     messages,
     users,
-    typingUsers : []
+    typingUsers : [],
+    newUsers : []
 });
 
 

@@ -10,6 +10,9 @@ class Messages  extends React.Component {
     constructor(props) {
         super(props);
         this.messageContainer = React.createRef();
+        this.state = {
+            newUsers : []
+        }
     }
 
     /**
@@ -29,15 +32,41 @@ class Messages  extends React.Component {
 
     componentDidUpdate = () => {
         this.scrollOnMount();
+        if (!this.checkNotificationInterval) this.showNewUsersNotifications();
+    };
+
+
+    startCheckingNotificationExpire = () => {
+        const newUsers = this.state.newUsers.filter(u => Date.now() - u.timeStamp < 3000);
+        this.setState({newUsers});
+        if (!newUsers.length) clearInterval(this.checkNotificationInterval)
+    };
+    
+    
+    showNewUsersNotifications = () => {
+        let { newUsers } = this.props;
+        const { clearNewUsersFromRedux } = this.props;
+        if (newUsers.length) {
+            newUsers = newUsers.map(u => {
+                u.timeStamp = Date.now();
+                return u;
+            });
+            this.setState({newUsers});
+            clearNewUsersFromRedux();
+            this.checkNotificationInterval = setInterval(() => {
+                this.startCheckingNotificationExpire();
+            }, 500)
+        }
     };
 
 
     render(){
         const { typingUsers, messages, user} = this.props;
+        const { newUsers } = this.state;
         return (
             <React.Fragment>
                 <div className="messages__container" ref={this.messageContainer}>
-                    {messages.length && messages.map((m,i)=> {
+                    {messages && messages.map((m,i)=> {
                         const { time, timeStamp, sender, message} = m;
                         const fromMe = sender === user.username;
                         return (
@@ -63,11 +92,18 @@ class Messages  extends React.Component {
                                 }
                             })}
                     </div>
+                    <div>
+                        {
+                            newUsers && newUsers.map(user => <div key={user.id}>{user.name} just joined the chat</div>)
+                        }
+                    </div>
                 </div>
             </React.Fragment>
         )
     }
 }
+
+
 
 Messages.propTypes = {
     messages : propTypes.arrayOf(
@@ -83,7 +119,9 @@ Messages.propTypes = {
     user : propTypes.shape({
         id : propTypes.string.isRequired,
         username : propTypes.string.isRequired
-    }).isRequired
+    }).isRequired,
+    clearNewUsersFromRedux : propTypes.func.isRequired,
+    newUsers : propTypes.array.isRequired
 };
 
 export default Messages;

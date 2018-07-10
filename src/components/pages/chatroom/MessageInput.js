@@ -102,6 +102,7 @@ class MessageInput extends Component {
         sendTypingToChat : PropTypes.func.isRequired,
     };
 
+
     /**
      * Stops typing event if component is going to unmount
      */
@@ -109,6 +110,11 @@ class MessageInput extends Component {
         this.stopCheckingTyping();
     }
 
+
+    /**
+     * Handles sending a message
+     * @param e
+     */
     handleSubmit = (e) => {
         e.preventDefault();
         this.sendMessage();
@@ -124,6 +130,8 @@ class MessageInput extends Component {
     };
 
 
+
+
     /**
      * Sets interval for checking whether or not a user is typing
      */
@@ -136,6 +144,8 @@ class MessageInput extends Component {
         }, 3300)
     };
 
+
+
     /**
      * Clears interval for checking typing
      */
@@ -145,6 +155,8 @@ class MessageInput extends Component {
             this.props.sendTypingToChat(false);
         }
     };
+
+
 
     /**
      * Sets state's isTyping property to true and sends typing event to the back-end
