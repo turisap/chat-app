@@ -48,10 +48,10 @@ class Messages  extends React.Component {
         const { clearNewUsersFromRedux } = this.props;
         newUsers = newUsers.concat(this.state.newUsers);
         if (newUsers.length) {
-            newUsers = newUsers.map(u => {
-                u.timeStamp = Date.now();
-                return u;
-            });
+            // newUsers = newUsers.map(u => {
+            //     u.timeStamp = Date.now();
+            //     return u;
+            // });
             this.setState({newUsers});
             clearNewUsersFromRedux();
             this.checkNotificationInterval = setInterval(() => {

@@ -8,7 +8,8 @@ const moment = require('moment');
  */
 const createUser = (username) => ({
         id : uuid(),
-        username
+        username,
+        timeStamp : Date.now()
 });
 
 
