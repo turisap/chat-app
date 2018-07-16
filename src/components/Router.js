@@ -26,16 +26,18 @@ export default class Router extends React.Component {
 
 
      render() {
-        return(
-            <BrowserRouter>
-                <React.Fragment>
-                    <NavBar/>
-                    <Switch>
-                        <Route path="/chat" component={RequireAuth(ChatReduxContainer)}/>
-                        <Route path="/signin" component={SignInFormReduxContainer}/>
-                    </Switch>
-                </React.Fragment>
-            </BrowserRouter>
-        )
-    }
+         const jsx = (<BrowserRouter>
+             <React.Fragment>
+                 <NavBar/>
+                 <Switch>
+                     <Route path="/chat" component={RequireAuth(ChatReduxContainer)}/>
+                     <Route path="/signin" component={SignInFormReduxContainer}/>
+                 </Switch>
+             </React.Fragment>
+         </BrowserRouter>)
+
+         return(
+             this.props.socket ? jsx : ''
+         )
+     }
 }

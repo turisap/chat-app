@@ -12,13 +12,21 @@ class LoginForm extends Component {
         this.state = {
             error : null,
             username : null
-        }
+        };
+        this.signInForm = React.createRef();
     }
 
     static propTypes = {
         socket : PropTypes.object.isRequired,
         setUser : PropTypes.func.isRequired
     };
+
+
+    componentDidMount() {
+        if (window.DEBUG) {
+            this.byPassLogin();
+        }
+    }
 
     /**
      * Redirect on successful login
@@ -39,8 +47,6 @@ class LoginForm extends Component {
      * @param userExists
      */
     setUser = ({userExists, user}) => {
-        // console.log(user, userExists);
-
         if(userExists) {
             this.setError('Username is already taken');
             return;
@@ -63,6 +69,10 @@ class LoginForm extends Component {
     };
 
 
+    /**
+     * Emits a socket event on form submission
+     * @param e
+     */
     handleSubmit = (e) => {
         e.preventDefault();
         const { socket } = this.props;
@@ -70,9 +80,19 @@ class LoginForm extends Component {
         socket.emit(events.VERIFY_USER, username, this.setUser);
     };
 
+
+    /**
+     * Bypassing login functionality for development
+     */
+    byPassLogin = () => {
+        this.setState({username : Date.now()});
+        this.handleSubmit({preventDefault : () => {}});
+    };
+
+
     render() {
         return (
-            <form className={'login__form'} onSubmit={this.handleSubmit}>
+            <form className={'login__form'} onSubmit={this.handleSubmit} ref={this.signInForm}>
                 <Input
                     type={"text"}
                     placeholder={"Pick up a username"}
