@@ -30,22 +30,23 @@ class Messages  extends React.Component {
     };
 
 
-    componentDidUpdate = () => {
+    componentDidUpdate = (prevProps) => {
         this.scrollOnMount();
-        if (!this.checkNotificationInterval) this.showNewUsersNotifications();
+        if(prevProps.newUsers.length !== this.props.newUsers.length) this.showNewUsersNotifications();
     };
 
 
     startCheckingNotificationExpire = () => {
-        const newUsers = this.state.newUsers.filter(u => Date.now() - u.timeStamp < 3000);
+        const newUsers = this.state.newUsers.filter(u => Date.now() - u.timeStamp < 15000);
         this.setState({newUsers});
         if (!newUsers.length) clearInterval(this.checkNotificationInterval)
     };
     
-    
+
     showNewUsersNotifications = () => {
         let { newUsers } = this.props;
         const { clearNewUsersFromRedux } = this.props;
+        newUsers = newUsers.concat(this.state.newUsers);
         if (newUsers.length) {
             newUsers = newUsers.map(u => {
                 u.timeStamp = Date.now();
@@ -94,7 +95,9 @@ class Messages  extends React.Component {
                     </div>
                     <div>
                         {
-                            newUsers && newUsers.map(user => <div key={user.id}>{user.name} just joined the chat</div>)
+                            newUsers && newUsers.map(user => {
+                                if (this.props.user.id !== user.id) return <div key={user.id}>{user.username} just joined the chat</div>
+                            })
                         }
                     </div>
                 </div>
