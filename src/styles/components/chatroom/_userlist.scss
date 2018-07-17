@@ -1,7 +1,34 @@
 @import "../../base/mixins";
 @import "../../settings";
 
+
 .userlist__main {
-  @include bordered($grey_border);
+  @include bordered-edges($grey_border, 1px);
+  border-top: 1px $grey_border solid;
+  height: 100%;
   grid-column: 1;
+  border-radius : 5px;
+}
+
+
+.userlist__user {
+  @include display-flex($justify-content: center, $align-items : center);
+  height: 5rem;
+  width: 100%;
+  border-bottom: 1px solid $grey_border;
+}
+
+
+.userlist__user:hover {
+  background: #f0f0f0;
+  cursor:  pointer;
+  transition : background .3s ease-in-out;
+}
+
+
+.userlist__user:focus {
+  background: #d9d9d9;
+  cursor:  pointer;
+  outline: none;
+  transition: background .3s ease-in-out;
 }

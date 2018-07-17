@@ -28,6 +28,16 @@
   @content;
 }
 
+// bordered utility class
+@mixin bordered ($color : red, $thickness: 1px) {
+  border: $thickness solid $color;
+}
+
+@mixin bordered-edges ($color : red, $thickens : 1px) {
+  border-right: $thickens solid $color;
+  border-left : $thickens solid $color;
+}
+
 // box shadow
 @mixin shadow ($hor-offset, $vert-offset, $blur-rad, $spread-rad, $color){
   -webkit-box-shadow: $hor-offset $vert-offset $blur-rad $spread-rad $color;
@@ -36,20 +46,18 @@
   @content;
 }
 
-// bordered utility class
-@mixin bordered ($color : red) {
-  border: 1px solid $color;
-}
 
-@mixin display-flex($justify-content:flex-start, $flex-direction:row, $flex-wrap:true){
+@mixin display-flex($justify-content:flex-start, $flex-direction:row, $flex-wrap:true, $align-items: center){
   display: flex;
+  align-items: $align-items;
   justify-content: $justify-content;
   flex-direction: $flex-direction;
   flex-wrap: if($flex-wrap, wrap, none);
 }
 
-@mixin  display-grid(){
+@mixin  display-grid($gap: 0px){
   display: grid;
   justify-self: center;
   align-self: center;
+  grid-gap: $gap;
 }
