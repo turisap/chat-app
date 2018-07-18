@@ -37,13 +37,25 @@ module.exports = (env = {}) => {
                     use: ["babel-loader", 'eslint-loader']
                 },
                 {
+                    test: /\.(png|jpg|gif)$/,
+                    use: [
+                        {
+                            loader  : 'url-loader?limit=30000&name=images/[name].[ext]',
+                            options: {
+                                limit: 8192
+                            }
+                        }
+                    ]
+                },
+                {
                     test: /\.sc?ss$/,
                     use: [
                         MiniCssExtractPlugin.loader,
                         "css-loader",
-                        "sass-loader"
+                        "sass-loader",
+
                     ]
-                }
+                },
             ]
         },
         devtool : isDevelopment ? 'eval' : 'source-map',
