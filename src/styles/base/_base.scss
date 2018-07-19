@@ -8,7 +8,17 @@ body, html {
   padding: 0;
   margin: 0;
   overflow: hidden;
-  background : url("../../assets/leaves-pattern.png");
+  background : url("../../src/assets/leaves-pattern.png");
+}
+
+
+::-webkit-scrollbar {
+  width: 0px;  /* remove scrollbar space */
+  background: transparent;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
 }
 
 
