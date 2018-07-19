@@ -1,0 +1,18 @@
+@import "../../base/settings";
+
+.message {
+  @include display-flex($flex-direction: column);
+  background: #2a88bd;
+  margin-bottom: 2rem;
+  padding: 15px;
+  border-radius: 50px;
+  word-break: break-all;
+}
+
+.message__sender {
+  @include display-flex($justify-content:space-between);
+}
+
+.message.message--from_me {
+  grid-column: 3;
+}

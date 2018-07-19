@@ -67,38 +67,40 @@ class Messages  extends React.Component {
         return (
             <React.Fragment>
                 <div className="messages__container" ref={this.messageContainer}>
-                    {messages && messages.map((m,i)=> {
-                        const { time, timeStamp, sender, message} = m;
-                        const fromMe = sender === user.username;
-                        return (
-                            <Message
-                                fromMe={fromMe}
-                                sender={sender}
-                                timeStamp={timeStamp}
-                                time={time}
-                                message={message}
-                                key={i}
-                            />
-                        )
-                    })}
-                    <div>
-                        {
-                            typingUsers && typingUsers.map(u => {
-                                if (u.id !== user.id) {
-                                    return (
-                                        <div key={u.id}>
-                                            {`${u.username} is typing...`}
-                                        </div>
-                                    )
-                                }
-                            })}
-                    </div>
-                    <div>
-                        {
-                            newUsers && newUsers.map(user => {
-                                if (this.props.user.id !== user.id) return <div key={user.id}>{user.username} just joined the chat</div>
-                            })
-                        }
+                    <div className={'messages__container--inner'}>
+                        {messages && messages.map((m,i)=> {
+                            const { time, timeStamp, sender, message} = m;
+                            const fromMe = sender === user.username;
+                            return (
+                                <Message
+                                    fromMe={fromMe}
+                                    sender={sender}
+                                    timeStamp={timeStamp}
+                                    time={time}
+                                    message={message}
+                                    key={i}
+                                />
+                            )
+                        })}
+                        <div>
+                            {
+                                typingUsers && typingUsers.map(u => {
+                                    if (u.id !== user.id) {
+                                        return (
+                                            <div key={u.id}>
+                                                {`${u.username} is typing...`}
+                                            </div>
+                                        )
+                                    }
+                                })}
+                        </div>
+                        <div>
+                            {
+                                newUsers && newUsers.map(user => {
+                                    if (this.props.user.id !== user.id) return <div key={user.id}>{user.username} just joined the chat</div>
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
             </React.Fragment>

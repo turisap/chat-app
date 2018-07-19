@@ -1,6 +1,15 @@
 @import "../../base/mixins";
+@import "../../settings";
 
 .messages__container {
-  @include bordered(#000);
+  @include bordered($grey_border);
+  @include display-flex($flex-direction:column, $flex-wrap:false);
   height: 70vh;
+  padding: 50px 30px;
+  color: $messages_text;
+}
+
+.messages__container--inner {
+  width: 100%;
+  min-height: 70vh;
 }
