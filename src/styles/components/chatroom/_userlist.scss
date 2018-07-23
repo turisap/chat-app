@@ -5,10 +5,13 @@
 .userlist__main {
   @include bordered-edges($grey_border, 1px);
   border-bottom: 1px $grey_border solid;
-  height: 100%;
   grid-column: 1;
   border-radius : 5px;
   overflow-y: auto;
+}
+
+.userlist__inner {
+  min-height: 100vh;
 }
 
 
