@@ -8,14 +8,15 @@ import propTypes from 'prop-types';
  * @constructor
  */
 const Button = props => (
-    <button onClick={props.buttonClickHandler}>
+    <button onClick={props.buttonClickHandler} className={props.class}>
         {props.title}
     </button>
 );
 
 Button.propTypes = {
     title : propTypes.string.isRequired,
-    buttonClickHandler : propTypes.func
+    buttonClickHandler : propTypes.func,
+    class : propTypes.string
 };
 
 

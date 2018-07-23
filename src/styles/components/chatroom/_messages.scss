@@ -3,13 +3,23 @@
 
 .messages__container {
   @include bordered($grey_border);
-  @include display-flex($flex-direction:column, $flex-wrap:false);
-  height: 70vh;
+  height: 55vh;
   padding: 50px 30px;
   color: $messages_text;
 }
 
 .messages__container--inner {
+  @include display-flex($flex-direction:column, $flex-wrap:false);
   width: 100%;
   min-height: 70vh;
+}
+
+.messages__typing {
+  width: 100%;
+  background: rgba(195, 195, 195, 0.8);
+}
+
+.messages__newuser {
+  width: 100%;
+  background: rgba(195, 195, 195, 0.8);
 }

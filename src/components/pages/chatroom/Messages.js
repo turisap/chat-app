@@ -82,7 +82,7 @@ class Messages  extends React.Component {
                                 />
                             )
                         })}
-                        <div>
+                        <div  className={"messages__typing"}>
                             {
                                 typingUsers && typingUsers.map(u => {
                                     if (u.id !== user.id) {
@@ -94,10 +94,10 @@ class Messages  extends React.Component {
                                     }
                                 })}
                         </div>
-                        <div>
+                        <div className={"messages__newuser"}>
                             {
                                 newUsers && newUsers.map(user => {
-                                    if (this.props.user.id !== user.id) return <div key={user.id}>{user.username} just joined the chat</div>
+                                    if (this.props.user.id !== user.id) return <div key={user.id} >{user.username} just joined the chat</div>
                                 })
                             }
                         </div>

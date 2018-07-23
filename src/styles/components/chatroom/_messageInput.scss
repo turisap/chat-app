@@ -1,0 +1,31 @@
+@import '../../base/settings';
+@import '../../base/mixins';
+
+.input__box {
+  @include bordered($color : $grey_border);
+  padding: .8rem;
+  margin-top: 1rem;
+}
+
+.message__form {
+  @include display-flex($justify-content: space-between);
+}
+
+.input__message {
+  height: 5rem;
+  width: 80%;
+}
+
+.button__send {
+  text-align: center;
+  width: 15%;
+  height: 5rem;
+  border: none;
+  outline: none;
+  color: whitesmoke;
+  background: #7f7eff;
+}
+
+.button__send:hover {
+  background: rgba(127, 126, 255, 0.6);
+}

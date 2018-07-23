@@ -2,11 +2,15 @@
 
 .message {
   @include display-flex($flex-direction: column);
-  background: #2a88bd;
+  background: rgba(42, 136, 189, 0.8);
   margin-bottom: 2rem;
   padding: 15px;
   border-radius: 50px;
   word-break: break-all;
+  margin-left: auto;
+  margin-right: 0;
+  min-width: 30%;
+  max-width: 70%;
 }
 
 .message__sender {
@@ -14,5 +18,8 @@
 }
 
 .message.message--from_me {
-  grid-column: 3;
+  margin-left: 0;
+  margin-right: auto;
+  background: rgba(238, 219, 106, 0.8);
 }
+

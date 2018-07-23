@@ -174,14 +174,15 @@ class MessageInput extends Component {
     render() {
         return (
             <div className={"input__box"}>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} className={"message__form"}>
                     <input
                         type={'text'}
                         onChange={e => this.setState({message:e.target.value})}
                         onKeyUp={e => e.keyCode !== 13 && this.sendTyping()}
                         value={this.state.message}
+                        className={"input__message"}
                     />
-                    <Button title={'SEND'} onClick={this.handleSubmit}/>
+                    <Button title={'SEND'} onClick={this.handleSubmit} class={"button__send"}/>
                 </form>
             </div>
         );
